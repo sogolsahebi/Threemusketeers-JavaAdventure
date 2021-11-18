@@ -4,6 +4,6 @@
 |Thomas Kolman       | kolmanth    | 1005516933   | kolman@mail.utoronto.ca      | Email or Discord or 2267003966                    |   not-the-tom               |
 |Justin Zhang           |    ...    |    ...        |  bingming.zhang@mail.utoronto.ca     |    Email              |        ...          |
 |Nasim Bondar Sahebi           |     yazdan46  |      1005320797   |      sogol.sahebi@mail.utoronto.ca|       email or 4379831260          |         yazdan46         |
-|           |        |            |       |                     |                  |
+|Ivan Li           |liivan5        |1007243733            |iv.li@mail.utoronto.ca       |Email                     |ivli0                  |
 
 ---
