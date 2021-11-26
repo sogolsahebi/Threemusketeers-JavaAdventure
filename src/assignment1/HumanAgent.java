@@ -1,8 +1,8 @@
 package assignment1;
 
-import assignment1.Exceptions.InvalidMoveException;
 import java.util.List;
 import java.util.Scanner;
+import assignment1.Exceptions.InvalidMoveException;
 
 public class HumanAgent extends Agent {
 
