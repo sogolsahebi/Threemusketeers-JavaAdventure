@@ -1,6 +1,8 @@
 package assignment1;
+//Hey this is A3's assignment1
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -136,20 +138,71 @@ public class ThreeMusketeers {
      * does the move on the board.
      * @param agent Agent to get the move from.
      */
-    protected void move(final Agent agent) {
+    
+    protected Move move(final Agent agent) {
         final Move move = agent.getMove();
+        this.move(move);
+        return move;
+    }
+
+    /**
+     * Do the given move on the board and add a copy to the moves list.
+     */
+ 
+    protected void move(Move move) {
         moves.add(new Move(move));
         board.move(move);
     }
+    
+
+    
+//    protected void move(final Agent agent) { // TODO			
+//    	// FIRST FUNCTION 'COMPLETE'
+//    	
+//    	// LET'S FOLLOW THE INSTRUCTIONS CORRECTLY
+//    	// 
+//    	
+//    	Move copy_of_agents_move = new Move(agent.getMove());		// Get's a move from the given agent, stores it in a local variable
+//    	
+//    	moves.add(copy_of_agents_move);					// Adds a 'copy' of the move to the moves stack
+//    	
+//    	board.move(copy_of_agents_move);				// Does the move on the board. Again, NOT A COPY.
+//    	
+//    	
+//    	
+//    	
+//    	// PIAZZA ANSWER: 
+////    	Move move2 = new Move(move1);
+////    	// move2 is a deep copy of move1
+//    	
+//    	
+//    }
 
     /**
      * Removes a move from the top of the moves stack and undoes the move on the board.
      */
-    private void undoMove() {
-        board.undoMove(moves.remove(moves.size() - 1));
+    public void undoMove() {
+        if (moves.size() == 0) {
+            System.out.println("No moves to undo.");
+            return;
+        }
+        if (moves.size() == 1 || isHumansPlaying() || gameOverUndoCondition()) {
+            board.undoMove(moves.remove(moves.size() - 1));
+        } else {
+            board.undoMove(moves.remove(moves.size() - 1));
+            board.undoMove(moves.remove(moves.size() - 1));
+        }
         System.out.println("Undid the previous move.");
     }
+    
+    private boolean gameOverUndoCondition() {
+        Piece.Type fromPieceType = moves.get(moves.size() - 1).fromCell.getPiece().getType();
+        return board.isGameOver()
+                && ((fromPieceType.equals(Piece.Type.MUSKETEER) && musketeerAgent instanceof HumanAgent)
+                || (fromPieceType.equals(Piece.Type.GUARD) && guardAgent instanceof HumanAgent));
+    }
 
+    
     /**
      * Get human input for move action
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save

@@ -1,6 +1,9 @@
 package assignment1;
 
 import java.io.BufferedWriter;
+
+
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,9 +11,24 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Board {
     public int size = 5;
@@ -58,6 +76,10 @@ public class Board {
         return turn;
     }
 
+    public void setTurn(Piece.Type turn) {
+        this.turn = turn;
+    }
+
     /**
      * Get the cell located on the board at the given coordinate.
      * @param coordinate Coordinate to find the cell
@@ -67,9 +89,6 @@ public class Board {
         return this.board[coordinate.row][coordinate.col];
     }
 
-    /**
-     * @return the game winner Piece.Type (Muskeeteer or Guard) if there is one otherwise null
-     */
     public Piece.Type getWinner() {
         return winner;
     }
@@ -97,7 +116,7 @@ public class Board {
     }
 
     /**
-     * Executes the given move on the board and changes turns at the end of the method.
+     * Executes the given move on the board.
      * @param move a valid move
      */
     public void move(Move move) {
@@ -110,7 +129,7 @@ public class Board {
     /**
      * Undo the move given.
      * @param move Copy of a move that was done and needs to be undone. The move copy has the correct piece info in the
-     *             from and to cell fields. Changes turns at the end of the method.
+     *             from and to cell fields.
      */
     public void undoMove(Move move) {
         Cell fromCell = getCell(move.fromCell.getCoordinate());
@@ -121,11 +140,10 @@ public class Board {
     }
 
     /**
-     * Checks if the given move is valid. Things to check:
-     * (1) the toCell is next to the fromCell
-     * (2) the fromCell piece can move onto the toCell piece.
+     * Checks if the given move is valid.
+     *
      * @param move a move
-     * @return     True, if the move is valid, false otherwise
+     * @return True, if the move is valid, false otherwise
      */
     public Boolean isValidMove(Move move) {
         Cell fromCell = move.fromCell;
@@ -140,7 +158,8 @@ public class Board {
 
     /**
      * Get all the possible cells that have pieces that can be moved this turn.
-     * @return      Cells that can be moved from the given cells
+     *
+     * @return Cells that can be moved from the given cells
      */
     public List<Cell> getPossibleCells() {
         List<Cell> allCellsThisTurn = getTurn() == Piece.Type.MUSKETEER ? getMusketeerCells() : getGuardCells();
@@ -253,6 +272,33 @@ public class Board {
         }
         return boardStr.toString();
     }
+    
+    
+    
+    protected List<Cell> getAllCells() {
+        return Arrays.stream(board).flatMap(Arrays::stream).collect(Collectors.toList());
+    }
+
+    private Boolean onBoard(Coordinate coordinate) {
+        return 0 <= coordinate.col && coordinate.col < this.size &&
+                0 <= coordinate.row && coordinate.row < this.size;
+    }
+
+    private Boolean isNextTo(Coordinate fromCoordinate, Coordinate toCoordinate) {
+        int xDiff = Math.abs(fromCoordinate.col - toCoordinate.col);
+        int yDiff = Math.abs(fromCoordinate.row - toCoordinate.row);
+        return (xDiff == 0 && yDiff == 1) || (xDiff == 1 && yDiff == 0) ;
+    }
+
+    private Boolean inSameRowOrSameCol(List<Cell> cells) {
+        long numRows = cells.stream().map(cell -> cell.getCoordinate().row).distinct().count();
+        long numCols = cells.stream().map(cell -> cell.getCoordinate().col).distinct().count();
+        return numRows == 1 || numCols == 1;
+    }
+
+    private void changeTurn() {
+        setTurn(getTurn() == Piece.Type.MUSKETEER ? Piece.Type.GUARD : Piece.Type.MUSKETEER);
+    }
 
     /**
      * Loads a board file from a file path.
@@ -290,4 +336,5 @@ public class Board {
         scanner.close();
         System.out.printf("Loaded board from %s.\n", filePath);
     }
+    
 }
