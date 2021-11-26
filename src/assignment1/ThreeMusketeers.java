@@ -153,30 +153,6 @@ public class ThreeMusketeers {
         moves.add(new Move(move));
         board.move(move);
     }
-    
-
-    
-//    protected void move(final Agent agent) { // TODO			
-//    	// FIRST FUNCTION 'COMPLETE'
-//    	
-//    	// LET'S FOLLOW THE INSTRUCTIONS CORRECTLY
-//    	// 
-//    	
-//    	Move copy_of_agents_move = new Move(agent.getMove());		// Get's a move from the given agent, stores it in a local variable
-//    	
-//    	moves.add(copy_of_agents_move);					// Adds a 'copy' of the move to the moves stack
-//    	
-//    	board.move(copy_of_agents_move);				// Does the move on the board. Again, NOT A COPY.
-//    	
-//    	
-//    	
-//    	
-//    	// PIAZZA ANSWER: 
-////    	Move move2 = new Move(move1);
-////    	// move2 is a deep copy of move1
-//    	
-//    	
-//    }
 
     /**
      * Removes a move from the top of the moves stack and undoes the move on the board.

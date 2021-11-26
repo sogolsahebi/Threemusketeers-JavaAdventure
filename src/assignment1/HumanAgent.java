@@ -5,8 +5,6 @@ import java.util.Random;
 import java.util.Scanner;
 import assignment1.Exceptions.InvalidMoveException;
 
-import assignment1.Exceptions.InvalidMoveException;
-
 public class HumanAgent extends Agent {
 
     public HumanAgent(Board board) {
@@ -61,7 +59,9 @@ public class HumanAgent extends Agent {
     	    user_string = reader.nextLine(); // Scans the next token of the input as an int.
     	    
     	    try {
+    	    	
     	        int d = Integer.parseInt(user_string);
+    	        
     	    } catch (NumberFormatException nfe) {
     	    	
     	    	System.out.println("Invalid move please enter an integer value that is valids");
@@ -74,18 +74,19 @@ public class HumanAgent extends Agent {
     	    	if(Integer.parseInt(user_string) >= 0 && Integer.parseInt(user_string) < all_possible_moves.size()) {
         	    	
         	    	booly = true;
+        	    	
         	    }
     	    	else {
     	    		
     	    		System.out.println("Enter a valid string int / integer representing the index of the move found in allPossibleMoves above: ");
 
     	    	}
+    	    	
     	    }
     	    
     	    else {
     	    	
     	    	System.out.println("Enter a valid string int / integer representing the index of the move found in allPossibleMoves above: ");
-
     	    	
     	    }
     	    
@@ -93,8 +94,5 @@ public class HumanAgent extends Agent {
     	
     	return all_possible_moves.get(Integer.parseInt(user_string));
 
-    	
-    	
-    	
     }
 }
