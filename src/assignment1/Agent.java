@@ -18,3 +18,4 @@ public abstract class Agent {
      */
     public abstract Move getMove();
 }
+
