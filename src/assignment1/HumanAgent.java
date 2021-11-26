@@ -1,7 +1,6 @@
 package assignment1;
 
-import assignment1.InvalidMoveException;
-
+import assignment1.Exceptions.InvalidMoveException;
 import java.util.List;
 import java.util.Scanner;
 
