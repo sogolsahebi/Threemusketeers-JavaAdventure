@@ -1,3 +1,4 @@
+// RE UPDATED class! Should work for A3
 package assignment1;
 
 public abstract class Piece {
