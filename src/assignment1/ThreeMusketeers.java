@@ -2,7 +2,6 @@ package assignment1;
 //Hey this is A3's assignment1
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +11,8 @@ public class ThreeMusketeers {
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
+    private HintFactory hintFactory = new HintFactory();
+    private Hint hint1, hint2;
 
     // All possible game modes
     public enum GameMode {
@@ -38,6 +39,14 @@ public class ThreeMusketeers {
      */
     public ThreeMusketeers(String boardFilePath) {
         this.board = new Board(boardFilePath);
+        this.hint1 = hintFactory.createHint(this.board, 0);
+        this.hint2 = hintFactory.createHint(this.board, 1);
+    }
+    
+    public ThreeMusketeers(String boardFilePath, String randomHintFilePath, String greedyHintFilePath) {
+        this.board = new Board(boardFilePath);
+        this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
+        this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
     }
 
     /**
@@ -57,6 +66,51 @@ public class ThreeMusketeers {
     public void play(GameMode mode){
         selectMode(mode);
         runGame();
+    }
+    
+    /**
+     * Select to start a new game or load a saved game
+     */
+    public void newOrLoad() {
+    	
+    	switch(getStartOption()) {
+    	
+    		case "N":
+    			play();
+    			break;
+    		case "L":
+    			load();
+    			break;
+    	
+    	}
+    	
+    }
+    
+    /**
+     * Get the user input to load the board
+     */
+    public void load() {
+    	
+    	System.out.println("Enter the year when you save the board(four digits): ");
+    	String year = scanner.next();
+    	System.out.println("Enter the month when you save the board(two digits): ");
+    	String month = scanner.next();
+    	System.out.println("Enter the day when you save the board(two digits): ");
+    	String day = scanner.next();
+    	System.out.println("Enter the hour when you save the board(two digits): ");
+    	String hour = scanner.next();
+    	System.out.println("Enter the minute when you save the board(two digits): ");
+    	String minute = scanner.next();
+    	System.out.println("Enter the second when you save the board(two digits): ");
+    	String second = scanner.next();
+    	String time = year + "." + month + "." + day + "." + hour + "." + minute + "." + second;
+    	String boardFilePath = "Boards/" + time + ".txt";
+    	String randomHintFilePath = "Hint/random" + time + ".txt";
+    	String greedyHintFilePath = "Hint/greedy" + time + ".txt";
+    	
+    	ThreeMusketeers game = new ThreeMusketeers(boardFilePath, randomHintFilePath, greedyHintFilePath);
+    	game.play();
+	
     }
 
     /**
@@ -122,6 +176,9 @@ public class ThreeMusketeers {
                     case "S":
                         saveOptions();
                         break;
+                    case "H":
+                    	hintOptions();
+                    	break;
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
@@ -138,27 +195,79 @@ public class ThreeMusketeers {
     	switch(getSaveOption()) {
     	
     		case "H":
-    			SaveBuilder h = new SaveHint(board);
-    			h.save();
+    			SaveBuilder h = new SaveHint(board, hint1, hint2);
+    			Save hs = h.getSave();
+    			hs.save();
     			break;
     		case "A":
     			SaveBuilder a = new SaveAudience(board);
-    			System.out.println(3);
-    			a.save();
-    			System.out.println(4);
+    			Save as = a.getSave();
+    			as.save();
     			break;
     		case "B":
     			SaveBuilder b = new SaveBoard(board);
-    			b.save();
+    			Save bs = b.getSave();
+    			bs.save();
     			break;
     		case "E":
-    			SaveBuilder e = new SaveEverything(board);
-    			e.save();
+    			SaveBuilder e = new SaveEverything(board, hint1, hint2);
+    			Save es = e.getSave();
+    			es.save();
     			break;
     	
     	}
     	
     }
+    
+    private void hintOptions() {
+    	
+    	switch(getHintOption()) {
+    	
+		case "O":
+			Move hintMove1 = hint1.getHint();
+			if (hintMove1 != null) {
+				
+				System.out.println("The hint is: " + hintMove1);
+				
+			}
+			break;
+		case "T":
+			Move hintMove2 = hint2.getHint();
+			if (hintMove2 != null) {
+				
+				System.out.println("The hint is: " + hintMove2);
+				
+			}
+			break;
+	
+    	}
+    	
+    }
+    
+//    private void newOrLoad() {
+//    	
+//    	switch(getHintOption()) {
+//    	
+//		case "O":
+//			Move hintMove1 = hint1.getHint();
+//			if (hintMove1 != null) {
+//				
+//				System.out.println("The hint is: " + hintMove1);
+//				
+//			}
+//			break;
+//		case "T":
+//			Move hintMove2 = hint2.getHint();
+//			if (hintMove2 != null) {
+//				
+//				System.out.println("The hint is: " + hintMove2);
+//				
+//			}
+//			break;
+//	
+//    	}
+//    	
+//    }
 
     /**
      * Gets a move from the given agent, adds a copy of the move using the copy constructor to the moves stack, and
@@ -211,9 +320,9 @@ public class ThreeMusketeers {
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSmus]")) {
-            System.out.print("Invalid option. Enter 'M', 'U', or 'S': ");
+        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, 'S' to save, and 'H' for hint: ", board.getTurn().getType());
+        while (!scanner.hasNext("[MUSHmush]")) {
+            System.out.print("Invalid option. Enter 'M', 'U', 'S', or 'H': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
@@ -222,11 +331,33 @@ public class ThreeMusketeers {
     private String getSaveOption() {
         System.out.printf("[%s] Enter 'H' to save hint with the boarde, 'A' to save audience with the board, "
         		+ "'B' to save the board alone, or 'E' to save everything: ", board.getTurn().getType());
-        while (!scanner.hasNext("[HhAaBbEe]")) {
+        while (!scanner.hasNext("[HABEhabe]")) {
             System.out.print("Invalid option. Enter 'H', 'A', 'B', or 'E': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
+    }
+    
+    private String getHintOption() {
+    	
+    	System.out.printf("[%s] Enter 'O' to get level one hint, or 'T' to get level two hint: ", board.getTurn().getType());
+        while (!scanner.hasNext("[OTot]")) {
+            System.out.print("Invalid option. Enter 'O', or 'T': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    	
+    }
+    
+    private String getStartOption() {
+    	
+    	System.out.printf("Enter 'N' to start a new game, or 'L' to load a saved game: ", board.getTurn().getType());
+        while (!scanner.hasNext("[NLnl]")) {
+            System.out.print("Invalid option. Enter 'N', or 'L': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    	
     }
 
     /**
@@ -272,9 +403,9 @@ public class ThreeMusketeers {
         return GameMode.values()[mode];
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {    	
         String boardFileName = "Boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
-        game.play();
+        game.newOrLoad();
     }
 }
