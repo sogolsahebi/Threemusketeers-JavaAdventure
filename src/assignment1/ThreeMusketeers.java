@@ -120,7 +120,7 @@ public class ThreeMusketeers {
                         }
                         break;
                     case "S":
-                        board.saveBoard();
+                        saveOptions();
                         break;
                 }
             else { // Computer move
@@ -131,6 +131,33 @@ public class ThreeMusketeers {
 
         System.out.println(board);
         System.out.printf("\n%s won!%n", board.getWinner().getType());
+    }
+    
+    private void saveOptions() {
+    	
+    	switch(getSaveOption()) {
+    	
+    		case "H":
+    			SaveBuilder h = new SaveHint(board);
+    			h.save();
+    			break;
+    		case "A":
+    			SaveBuilder a = new SaveAudience(board);
+    			System.out.println(3);
+    			a.save();
+    			System.out.println(4);
+    			break;
+    		case "B":
+    			SaveBuilder b = new SaveBoard(board);
+    			b.save();
+    			break;
+    		case "E":
+    			SaveBuilder e = new SaveEverything(board);
+    			e.save();
+    			break;
+    	
+    	}
+    	
     }
 
     /**
@@ -187,6 +214,16 @@ public class ThreeMusketeers {
         System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
         while (!scanner.hasNext("[MUSmus]")) {
             System.out.print("Invalid option. Enter 'M', 'U', or 'S': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    }
+    
+    private String getSaveOption() {
+        System.out.printf("[%s] Enter 'H' to save hint with the boarde, 'A' to save audience with the board, "
+        		+ "'B' to save the board alone, or 'E' to save everything: ", board.getTurn().getType());
+        while (!scanner.hasNext("[HhAaBbEe]")) {
+            System.out.print("Invalid option. Enter 'H', 'A', 'B', or 'E': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
