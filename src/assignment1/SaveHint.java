@@ -2,9 +2,12 @@ package assignment1;
 
 public class SaveHint extends SaveBuilder{
 
-	public SaveHint(Board board) {
+    /**
+     * Create a save object that saves board and hint
+     */
+	public SaveHint(Board board, Hint hint1, Hint hint2) {
 		
-		super(board);
+		super(board, hint1, hint2);
 		this.doSaveHint();
 		this.doSaveBoard();
 		
