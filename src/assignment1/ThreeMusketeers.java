@@ -236,7 +236,7 @@ public class ThreeMusketeers {
     }
 
     public static void main(String[] args) {
-        String boardFileName = "Boards/Starter.txt";
+        String boardFileName = "boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.play();
     }
