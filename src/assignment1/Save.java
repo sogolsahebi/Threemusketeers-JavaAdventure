@@ -45,7 +45,7 @@ public class Save {
 		this.audience = audience;
 		
 	}
-	
+  
 	public void setBoard(Board board) {
 		
 		this.board = board;

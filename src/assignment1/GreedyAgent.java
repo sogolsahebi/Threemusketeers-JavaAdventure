@@ -25,7 +25,7 @@ public class GreedyAgent extends Agent {
         Move chosenMove = null;
 
         List<Move> possibleMoves = boardCopy.getPossibleMoves();
-        System.out.println("Moves:" + possibleMoves);
+//        System.out.println("Moves:" + possibleMoves);
         for (Move move: possibleMoves) {
         	
             Move moveCopy = new Move(move);
@@ -34,7 +34,7 @@ public class GreedyAgent extends Agent {
 
             double score = this.minimax(depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            System.out.printf("Move: %s Score: %.2f\n", move, score);
+//            System.out.printf("Move: %s Score: %.2f\n", move, score);
             if (turn.equals(Piece.Type.MUSKETEER) && score > bestScore) {
             	
                 bestScore = score;
@@ -53,9 +53,9 @@ public class GreedyAgent extends Agent {
         }
 
         assert chosenMove != null;
-        System.out.printf("[%s (Greedy Agent)] Moving piece %s to %s. Best Score: %.2f\n",
-                board.getTurn().getType(), chosenMove.fromCell.getCoordinate(), chosenMove.toCell.getCoordinate(),
-                bestScore);
+//        System.out.printf("[%s (Greedy Agent)] Moving piece %s to %s. Best Score: %.2f\n",
+//                board.getTurn().getType(), chosenMove.fromCell.getCoordinate(), chosenMove.toCell.getCoordinate(),
+//                bestScore);
         return new Move(
                 board.getCell(chosenMove.fromCell.getCoordinate()),
                 board.getCell(chosenMove.toCell.getCoordinate()));
