@@ -3,6 +3,7 @@ package assignment1;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class ThreeMusketeers {
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
+    private AduioAdapter audio;
 
     // All possible game modes
     public enum GameMode {
@@ -29,7 +31,9 @@ public class ThreeMusketeers {
      * Default constructor to load Starter board
      */
     public ThreeMusketeers() {
-        this.board = new Board();
+        this.board = new Board(); 
+        
+
     }
 
     /**
@@ -37,7 +41,7 @@ public class ThreeMusketeers {
      * @param boardFilePath filepath of custom board
      */
     public ThreeMusketeers(String boardFilePath) {
-        this.board = new Board(boardFilePath);
+        this.board = new Board(boardFilePath); 
     }
 
     /**
@@ -239,5 +243,7 @@ public class ThreeMusketeers {
         String boardFileName = "Boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.play();
+        game.audio.playaudio();
+        
     }
 }
