@@ -17,6 +17,6 @@ public abstract class Agent {
      * Gets a valid move that the Agent can perform on the Board
      * @return a valid Move that the Agent can do
      */
-    public abstract Move getMove();
+    public abstract Move getMove(IMoveStrategy.MoveType moveType);
 }
 

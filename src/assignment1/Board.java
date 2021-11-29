@@ -28,7 +28,8 @@ public class Board {
     private Piece.Type turn;
     private Piece.Type winner;
     
-    private RegularMove regMoveStrategy;
+    private RegularMove regularMoveStrategy;
+    private SpecialMove specialMoveStrategy;
 
     /**
      * Create a Board with the current player turn set.
@@ -152,55 +153,46 @@ public class Board {
      *
      * @return Cells that can be moved from the given cells
      */
-    public List<Cell> getPossibleCells() {
-        List<Cell> allCellsThisTurn = getTurn() == Piece.Type.MUSKETEER ? getMusketeerCells() : getGuardCells();
-        List<Cell> possibleCells = new ArrayList<>();
-        for (Cell cell : allCellsThisTurn) {
-            if (!getPossibleDestinations(cell).isEmpty())
-                possibleCells.add(cell);
-        }
-        return possibleCells;
-    }
+//    public List<Cell> getPossibleCells() {
+//        List<Cell> allCellsThisTurn = getTurn() == Piece.Type.MUSKETEER ? getMusketeerCells() : getGuardCells();
+//        List<Cell> possibleCells = new ArrayList<>();
+//        for (Cell cell : allCellsThisTurn) {
+//            if (!getPossibleDestinations(cell).isEmpty())
+//                possibleCells.add(cell);
+//        }
+//        return possibleCells;
+//    }
 
     /**
      * Get all the possible cell destinations that is possible to move to from the fromCell.
      * @param fromCell The cell that has the piece that is going to be moved
      * @return List of cells that are possible to get to
      */
-    public List<Cell> getPossibleDestinations(Cell fromCell) {
-    	
-        List<Cell> destinations = new ArrayList<>();
-        int[][] possibleMoves = {{-1,0}, {0,1}, {1,0}, {0,-1}};
-
-        for (int[] move: possibleMoves) {
-            Coordinate oldCoordinate = fromCell.getCoordinate();
-            int row = move[0] + oldCoordinate.row;
-            int col = move[1] + oldCoordinate.col;
-            Coordinate newCoordinate = new Coordinate(row, col);
-            if (!onBoard(newCoordinate)) continue;
-
-            Cell toCell = getCell(newCoordinate);
-            if (isValidMove(new Move(fromCell, toCell)))
-                destinations.add(toCell);
-        }
-        return destinations;
-    }
+//    public List<Cell> getPossibleDestinations(Cell fromCell, IMoveStrategy.MoveType moveType) {
+//    	
+//        List<Cell> destinations = new ArrayList<>();
+//        int[][] possibleMoves = {{-1,0}, {0,1}, {1,0}, {0,-1}};
+//
+//        for (int[] move: possibleMoves) {
+//            Coordinate oldCoordinate = fromCell.getCoordinate();
+//            int row = move[0] + oldCoordinate.row;
+//            int col = move[1] + oldCoordinate.col;
+//            Coordinate newCoordinate = new Coordinate(row, col);
+//            if (!onBoard(newCoordinate)) continue;
+//
+//            Cell toCell = getCell(newCoordinate);
+//            if (isValidMove(new Move(fromCell, toCell)))
+//                destinations.add(toCell);
+//        }
+//        return destinations;
+//    }
 
     /**
      * Get all the possible moves that can be made this turn.
      * @return List of moves that can be made this turn
      */
-    public List<Move> getPossibleMoves() {
-    	return regMoveStrategy.getPossibleMoves(this);
-//        List<Move> moves = new ArrayList<>();
-//        List<Cell> possibleCells = this.getPossibleCells();
-//        for (Cell fromCell: possibleCells) {
-//            List<Cell> possibleDestinations = this.getPossibleDestinations(fromCell);
-//            for (Cell toCell : possibleDestinations) {
-//                moves.add(new Move(fromCell, toCell));
-//            }
-//        }
-//        return moves;
+    public List<Move> getPossibleMoves(IMoveStrategy.MoveType moveType) {
+    	return (moveType == IMoveStrategy.MoveType.REGULAR) ? regularMoveStrategy.getPossibleMoves(this) : specialMoveStrategy.getPossibleMoves(this);
     }
 
     /**
@@ -212,7 +204,7 @@ public class Board {
             winner = Piece.Type.GUARD;
             return true;
         }
-        if (getPossibleCells().isEmpty()) {
+        if (regularMoveStrategy.getPossibleCells(this).isEmpty()) {
             winner = Piece.Type.MUSKETEER;
             return true;
         }
@@ -292,13 +284,18 @@ public class Board {
     public void changeTurn() {
         setTurn(getTurn() == Piece.Type.MUSKETEER ? Piece.Type.GUARD : Piece.Type.MUSKETEER);
     }
+    
+    public IMoveStrategy getMoveStrategy(IMoveStrategy.MoveType moveType) {
+    	return (moveType == IMoveStrategy.MoveType.REGULAR) ? regularMoveStrategy : specialMoveStrategy;
+    }
 
     /**
      * Loads a board file from a file path.
      * @param filePath The path to the board file to load (e.g. "Boards/Starter.txt")
      */
     private void loadBoard(String filePath) {
-    	regMoveStrategy = new RegularMove();
+    	regularMoveStrategy = new RegularMove();
+    	specialMoveStrategy = new SpecialMove();
     	
         File file = new File(filePath);
         Scanner scanner = null;

@@ -3,7 +3,10 @@ package assignment1;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegularMove {
+public class RegularMove implements IMoveStrategy{
+	
+	public RegularMove() {}	
+    int[][] possibleMoves = {{-1,0}, {0,1}, {1,0}, {0,-1}};
 	
 	public Boolean isValidMove(Board board, Move move) {
         Cell fromCell = move.fromCell;

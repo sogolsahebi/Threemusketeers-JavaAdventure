@@ -104,7 +104,7 @@ public class ThreeMusketeers {
             if (currentAgent instanceof HumanAgent) // Human move
                 switch (getInputOption()) {
                     case "M":
-                        move(currentAgent);
+                        move(currentAgent, IMoveStrategy.MoveType.REGULAR);
                         break;
                     case "U":
                         if (moves.size() == 0) {
@@ -122,10 +122,12 @@ public class ThreeMusketeers {
                     case "S":
                         board.saveBoard();
                         break;
+                    case "X":
+                    	move(currentAgent, IMoveStrategy.MoveType.SPECIAL);
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
-                move(currentAgent);
+                move(currentAgent, IMoveStrategy.MoveType.REGULAR);
             }
         }
 
@@ -139,8 +141,8 @@ public class ThreeMusketeers {
      * @param agent Agent to get the move from.
      */
     
-    protected Move move(final Agent agent) {
-        final Move move = agent.getMove();
+    protected Move move(final Agent agent, IMoveStrategy.MoveType moveType) {
+        final Move move = agent.getMove(moveType);
         this.move(move);
         return move;
     }
@@ -184,8 +186,8 @@ public class ThreeMusketeers {
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSmus]")) {
+        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
+        while (!scanner.hasNext("[MUSXmusx]")) {
             System.out.print("Invalid option. Enter 'M', 'U', or 'S': ");
             scanner.next();
         }
