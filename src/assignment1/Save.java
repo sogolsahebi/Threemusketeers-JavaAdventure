@@ -5,6 +5,7 @@ public class Save {
 	private boolean sHint, sAudience, sBoard;
 	private Hint hint1, hint2;
 	private Board board;
+	private Audience audience;
 
 	public Save() {
 
@@ -39,6 +40,12 @@ public class Save {
 		
 	}
 	
+	public void setAudience(Audience audience) {
+		
+		this.audience = audience;
+		
+	}
+  
 	public void setBoard(Board board) {
 		
 		this.board = board;
@@ -56,11 +63,11 @@ public class Save {
 			hint2.saveHint();
 			
 		}
-//		if (saveAudience) {
-//			
-//			audience.saveAudience();  //Uncomment when Audience is implemented
-//			
-//		}
+		if (saveAudience) {
+			
+			audience.saveScore();
+			
+		}
 		if (sBoard) {
 			
 			board.saveBoard();

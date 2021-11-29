@@ -31,6 +31,9 @@ public class ThreeMusketeers {
      */
     public ThreeMusketeers() {
         this.board = new Board();
+        this.hint1 = hintFactory.createHint(this.board, 0);
+        this.hint2 = hintFactory.createHint(this.board, 1);
+        this.newRandomMember = new Audience();
     }
 
     /**
@@ -41,12 +44,19 @@ public class ThreeMusketeers {
         this.board = new Board(boardFilePath);
         this.hint1 = hintFactory.createHint(this.board, 0);
         this.hint2 = hintFactory.createHint(this.board, 1);
+        this.newRandomMember = new Audience("Joe", "KILL EM ALL");
     }
     
-    public ThreeMusketeers(String boardFilePath, String randomHintFilePath, String greedyHintFilePath) {
+    /**
+     * Constructor to load saved board with saved hints and audience
+     * @param boardFilePath filepath of custom board, randomHintFilePath filepath of random hint,
+     *        greedyHintFilePath filepath of greedy hint, audienceFilePath filepath of audience
+     */
+    public ThreeMusketeers(String boardFilePath, String randomHintFilePath, String greedyHintFilePath, String audienceFilePath) {
         this.board = new Board(boardFilePath);
         this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
+        this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);
     }
 
     /**
@@ -107,8 +117,9 @@ public class ThreeMusketeers {
     	String boardFilePath = "Boards/" + time + ".txt";
     	String randomHintFilePath = "Hint/random" + time + ".txt";
     	String greedyHintFilePath = "Hint/greedy" + time + ".txt";
+    	String audienceFilePath = "Reactions/" + time + ".txt";
     	
-    	ThreeMusketeers game = new ThreeMusketeers(boardFilePath, randomHintFilePath, greedyHintFilePath);
+    	ThreeMusketeers game = new ThreeMusketeers(boardFilePath, randomHintFilePath, greedyHintFilePath, audienceFilePath);
     	game.play();
 	
     }
@@ -200,7 +211,7 @@ public class ThreeMusketeers {
     			hs.save();
     			break;
     		case "A":
-    			SaveBuilder a = new SaveAudience(board);
+    			SaveBuilder a = new SaveAudience(board, newRandomMember);
     			Save as = a.getSave();
     			as.save();
     			break;
@@ -210,7 +221,7 @@ public class ThreeMusketeers {
     			bs.save();
     			break;
     		case "E":
-    			SaveBuilder e = new SaveEverything(board, hint1, hint2);
+    			SaveBuilder e = new SaveEverything(board, hint1, hint2, newRandomMember);
     			Save es = e.getSave();
     			es.save();
     			break;
@@ -243,31 +254,6 @@ public class ThreeMusketeers {
     	}
     	
     }
-    
-//    private void newOrLoad() {
-//    	
-//    	switch(getHintOption()) {
-//    	
-//		case "O":
-//			Move hintMove1 = hint1.getHint();
-//			if (hintMove1 != null) {
-//				
-//				System.out.println("The hint is: " + hintMove1);
-//				
-//			}
-//			break;
-//		case "T":
-//			Move hintMove2 = hint2.getHint();
-//			if (hintMove2 != null) {
-//				
-//				System.out.println("The hint is: " + hintMove2);
-//				
-//			}
-//			break;
-//	
-//    	}
-//    	
-//    }
 
     /**
      * Gets a move from the given agent, adds a copy of the move using the copy constructor to the moves stack, and
@@ -328,8 +314,13 @@ public class ThreeMusketeers {
         return scanner.next().toUpperCase();
     }
     
+    /**
+     * Get human input for save action
+     * @return the selected save action, 'H': save hint with board, 'A': save audience with board,
+     *         'B': save board only, 'E': save everything
+     */
     private String getSaveOption() {
-        System.out.printf("[%s] Enter 'H' to save hint with the boarde, 'A' to save audience with the board, "
+        System.out.printf("[%s] Enter 'H' to save hint with the board, 'A' to save audience with the board, "
         		+ "'B' to save the board alone, or 'E' to save everything: ", board.getTurn().getType());
         while (!scanner.hasNext("[HABEhabe]")) {
             System.out.print("Invalid option. Enter 'H', 'A', 'B', or 'E': ");
@@ -338,6 +329,10 @@ public class ThreeMusketeers {
         return scanner.next().toUpperCase();
     }
     
+    /**
+     * Get human input for hint option
+     * @return the selected hint option, 'O': level one hint, 'T': level two hint
+     */
     private String getHintOption() {
     	
     	System.out.printf("[%s] Enter 'O' to get level one hint, or 'T' to get level two hint: ", board.getTurn().getType());
@@ -349,6 +344,10 @@ public class ThreeMusketeers {
     	
     }
     
+    /**
+     * Get human input for start option
+     * @return the selected start option, 'N': new game, 'L': load game
+     */
     private String getStartOption() {
     	
     	System.out.printf("Enter 'N' to start a new game, or 'L' to load a saved game: ", board.getTurn().getType());
