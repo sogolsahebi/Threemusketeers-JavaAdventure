@@ -403,8 +403,8 @@ public class ThreeMusketeers {
         return GameMode.values()[mode];
     }
 
-    public static void main(String[] args) {    	
-        String boardFileName = "Boards/Starter.txt";
+    public static void main(String[] args) {
+        String boardFileName = "boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.newOrLoad();
     }

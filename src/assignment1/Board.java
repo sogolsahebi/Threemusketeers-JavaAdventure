@@ -32,7 +32,7 @@ public class Board {
      * Create a Board with the current player turn set.
      */
     public Board() {
-        this.loadBoard("Boards/Starter.txt");
+        this.loadBoard("boards/Starter.txt");
     }
 
     /**
