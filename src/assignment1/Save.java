@@ -63,7 +63,7 @@ public class Save {
 			hint2.saveHint();
 			
 		}
-		if (saveAudience) {
+		if (saveAudience) {			// sAudience change it to that instead
 			
 			audience.saveScore();
 			

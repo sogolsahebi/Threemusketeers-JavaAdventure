@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ThreeMusketeers {
+public class ThreeMusketeers implements GameObservable{
 
     private final Board board;
     private Agent musketeerAgent, guardAgent;
@@ -13,6 +13,13 @@ public class ThreeMusketeers {
     private final List<Move> moves = new ArrayList<>();
     private HintFactory hintFactory = new HintFactory();
     private Hint hint1, hint2;
+    
+    
+
+    
+    private Audience newRandomMember;		// = new Audience();		// 1 member in the audience, yea.
+    private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything
+    
 
     // All possible game modes
     public enum GameMode {
@@ -170,6 +177,24 @@ public class ThreeMusketeers {
                 switch (getInputOption()) {
                     case "M":
                         move(currentAgent);
+                        
+                        
+
+                        // **** CODE BELOW ****: is for doing the reactions, each member in the audience should react. Each observer must also be updated (obervers are members of the audience)
+                           for(Audience member : this.audienceMembers) {
+                           	
+                           	member.react();
+                           }
+                       
+                           
+                           
+                           
+                           // **** notifies observers
+                           this.notifyObservers();
+                           
+                        
+                        
+                        
                         break;
                     case "U":
                         if (moves.size() == 0) {
@@ -407,4 +432,60 @@ public class ThreeMusketeers {
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.newOrLoad();
     }
+    
+    
+    
+    @Override
+	public void registerObserver(Audience member) {
+		
+		
+		audienceMembers.add(member);
+		
+		
+		// ***********I
+		// OLD CODE BELOW DELETE, SINCE OLD CODE USES NORMAL ARRAY, GOOD CODE = ARRAYLIST.
+		
+//		// ******** NOTE ************: single observer, so we just made 1 audience member caalled newRandomMember.
+//		
+//		// **** CODE BELOW IS FOR ATTATCHING AN OBSERVER TO AN ARRAY OF LENGTH 1 **** ////
+//        for(int i = 0; i < this.audienceMembers.length; i ++) {
+//        	
+//        	if(this.audienceMembers[i] == null ) {
+//        		
+//        		this.audienceMembers[i] = member;		// newRandomMember;				// this is the new random member
+//        	}
+//        }
+//        
+        // **** CODE ABOVE IS FOR ATTATCHING AN OBSERVER TO AN ARRAY OF LENGTH 1 **** ////
+		// **** WARNING *** almost pointless unless its a list of audience, create a list of size 1 lol
+		
+		
+	}
+
+	@Override
+	public void unregisterObserver(Audience member) {
+		
+		// pre-cond: assuming member is a valid observer of the observable (meaning, member is an audience member of ThreeMusketeers)
+		
+		
+		int the_index = this.audienceMembers.indexOf(member);
+		
+		if(the_index >= 0) {
+			this.audienceMembers.remove(the_index);			// silently fails, if the index is >= 0, it is good, since it is definitely a valid one, only if index is < 0 ie -1 it is invalid.
+															// ^ in the case of an invalid index, it just does nothing = silently fails which is okay but not ideal.
+			
+		}
+		
+		
+	}
+
+	@Override
+	public void notifyObservers() {
+		
+		for(Audience member : this.audienceMembers) {
+			
+			member.update();
+		}
+		
+	}
 }
