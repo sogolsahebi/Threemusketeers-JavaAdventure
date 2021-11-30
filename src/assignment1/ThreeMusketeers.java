@@ -182,7 +182,7 @@ public class ThreeMusketeers implements GameObservable{
             if (currentAgent instanceof HumanAgent) // Human move
                 switch (getInputOption()) {
                     case "M":
-                        move(currentAgent);
+                        move(currentAgent, IMoveStrategy.MoveType.REGULAR);
                         
                         
                         	//System.out.println("Hey does Audience even work??");
@@ -203,8 +203,7 @@ public class ThreeMusketeers implements GameObservable{
                            this.notifyObservers();
                            
                         
-                        
-                        
+                
                         break;
                     case "U":
                         if (moves.size() == 0) {
@@ -222,13 +221,16 @@ public class ThreeMusketeers implements GameObservable{
                     case "S":
                         saveOptions();
                         break;
+                    case "X":
+                    	move(currentAgent, IMoveStrategy.MoveType.SPECIAL);
+                    	break;
                     case "H":
                     	hintOptions();
                     	break;
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
-                move(currentAgent);
+                move(currentAgent, IMoveStrategy.MoveType.REGULAR);
             }
         }
 
@@ -296,8 +298,8 @@ public class ThreeMusketeers implements GameObservable{
      * @param agent Agent to get the move from.
      */
     
-    protected Move move(final Agent agent) {
-        final Move move = agent.getMove();
+    protected Move move(final Agent agent, IMoveStrategy.MoveType moveType) {
+        final Move move = agent.getMove(moveType);
         this.move(move);
         return move;
     }
@@ -341,9 +343,9 @@ public class ThreeMusketeers implements GameObservable{
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, 'S' to save, and 'H' for hint: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSHmush]")) {
-            System.out.print("Invalid option. Enter 'M', 'U', 'S', or 'H': ");
+        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
+        while (!scanner.hasNext("[MUSXHmusxh]")) {
+            System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H' or 'S': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();

@@ -19,12 +19,13 @@ public class GreedyAgent extends Agent {
      * @return a valid Move that the GreedyAgent can perform on the Board
      */
     @Override
-    public Move getMove() {
+    public Move getMove(IMoveStrategy.MoveType moveType) {
         boardCopy = new Board(board);
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         Move chosenMove = null;
 
-        List<Move> possibleMoves = boardCopy.getPossibleMoves();
+        List<Move> possibleMoves = boardCopy.getPossibleMoves(IMoveStrategy.MoveType.REGULAR);
+        System.out.println("Moves:" + possibleMoves);
 //        System.out.println("Moves:" + possibleMoves);
         for (Move move: possibleMoves) {
         	
@@ -80,7 +81,7 @@ public class GreedyAgent extends Agent {
 
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
-        List<Move> possibleMoves = boardCopy.getPossibleMoves();
+        List<Move> possibleMoves = boardCopy.getPossibleMoves(IMoveStrategy.MoveType.REGULAR);
         for (Move move: possibleMoves) {
         	
             Move moveCopy = new Move(move);
