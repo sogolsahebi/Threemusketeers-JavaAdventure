@@ -11,7 +11,7 @@ User Story 4: Special Moves feature,
 User Story 5: Audio feature,
 User Story 6: agent feature.
 
-We decided to add another feature, perhaps using the design pattern 'null pattern' for hint, and perhaps updating AUdio and / or special moves 
+We decided to add another feature, perhaps using the design pattern 'null pattern' for hint, and perhaps updating Audio and / or special moves 
 with more features in sprint2. We expect to complete about 3/4 or 75% of our game by sprint1, leaving the remaining 25% to be a couple new features
 and refining old features.
 
