@@ -11,7 +11,7 @@ public class ThreeMusketeers implements GameObservable{
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
-    
+
     private AduioAdapter audio = new AduioAdapter(new MediaPlayer());
     private HintFactory hintFactory = new HintFactory();
     private Hint hint1, hint2;
@@ -70,6 +70,8 @@ public class ThreeMusketeers implements GameObservable{
         this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
         this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
+
+
         this.registerObserver(newRandomMember);
     }
 
@@ -347,10 +349,14 @@ public class ThreeMusketeers implements GameObservable{
         System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
         while (!scanner.hasNext("[MUSXHmusxh]")) {
             System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H' or 'S': ");
+
             scanner.next();
         }
         return scanner.next().toUpperCase();
     }
+    
+
+
     
     /**
      * Get human input for save action
@@ -444,8 +450,10 @@ public class ThreeMusketeers implements GameObservable{
     public static void main(String[] args) {
         String boardFileName = "boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
+
         game.play();
         game.audio.playaudio("sound/audioTrack1.wav");
+
         game.newOrLoad();
     }
     
