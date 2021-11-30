@@ -59,6 +59,9 @@ public class Board {
         }
         this.turn = board.turn;
         this.winner = board.winner;
+        
+        regularMoveStrategy = new RegularMove();
+    	specialMoveStrategy = new SpecialMove();
     }
 
     /**

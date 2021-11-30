@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialMove implements IMoveStrategy {
-    private int[][] possibleMoves = {{-2,0}, {0,2}, {2,0}, {0,-2}};
-    
-    public int[][] get() {
-    	return this.possibleMoves;
-    }
 
 	public Boolean isValidMove(Board board, Move move) {
         Cell fromCell = move.fromCell;

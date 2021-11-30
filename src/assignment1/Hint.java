@@ -87,12 +87,11 @@ public class Hint {
 			
 		}
 		hintNum = "0";
-		move = agent.getMove();
+		move = agent.getMove(IMoveStrategy.MoveType.REGULAR);
 		
 		return move;
 		
 	}
-	
     /**
      * Save the hints to local
      */

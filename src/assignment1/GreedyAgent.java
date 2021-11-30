@@ -24,7 +24,7 @@ public class GreedyAgent extends Agent {
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         Move chosenMove = null;
 
-        List<Move> possibleMoves = boardCopy.getMoveStrategy(moveType).getPossibleMoves(board);
+        List<Move> possibleMoves = boardCopy.getMoveStrategy(moveType).getPossibleMoves(boardCopy);
         System.out.println("Moves:" + possibleMoves);
 //        System.out.println("Moves:" + possibleMoves);
         for (Move move: possibleMoves) {

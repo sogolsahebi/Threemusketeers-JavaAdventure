@@ -176,10 +176,7 @@ public class ThreeMusketeers implements GameObservable{
             if (currentAgent instanceof HumanAgent) // Human move
                 switch (getInputOption()) {
                     case "M":
-<<<<<<< HEAD
                         move(currentAgent, IMoveStrategy.MoveType.REGULAR);
-=======
-                        move(currentAgent);
                         
                         
 
@@ -196,9 +193,7 @@ public class ThreeMusketeers implements GameObservable{
                            this.notifyObservers();
                            
                         
-                        
-                        
->>>>>>> master
+                
                         break;
                     case "U":
                         if (moves.size() == 0) {
@@ -216,14 +211,12 @@ public class ThreeMusketeers implements GameObservable{
                     case "S":
                         saveOptions();
                         break;
-<<<<<<< HEAD
                     case "X":
                     	move(currentAgent, IMoveStrategy.MoveType.SPECIAL);
-=======
+                    	break;
                     case "H":
                     	hintOptions();
                     	break;
->>>>>>> master
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
@@ -340,14 +333,9 @@ public class ThreeMusketeers implements GameObservable{
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-<<<<<<< HEAD
-        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSXmusx]")) {
-            System.out.print("Invalid option. Enter 'M', 'U', or 'S': ");
-=======
-        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, 'S' to save, and 'H' for hint: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSHmush]")) {
-            System.out.print("Invalid option. Enter 'M', 'U', 'S', or 'H': ");
+        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
+        while (!scanner.hasNext("[MUSXHmusxh]")) {
+            System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H' or 'S': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
@@ -377,7 +365,6 @@ public class ThreeMusketeers implements GameObservable{
     	System.out.printf("[%s] Enter 'O' to get level one hint, or 'T' to get level two hint: ", board.getTurn().getType());
         while (!scanner.hasNext("[OTot]")) {
             System.out.print("Invalid option. Enter 'O', or 'T': ");
->>>>>>> master
             scanner.next();
         }
         return scanner.next().toUpperCase();
