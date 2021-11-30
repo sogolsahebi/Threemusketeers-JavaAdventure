@@ -1,4 +1,2 @@
 Story Number, Name, Owner, Priority, Estimate, As a, I want, So that, IMPL Details
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
+User Story 3.1, Changing Agent Feature, Razi Messinger, 2, 2, User, A UI that allows me to change the computer agent while the game is running, I can choose to play against different agent in game, Instaintiate computer agent and greedy agent and the user can swap them in game
