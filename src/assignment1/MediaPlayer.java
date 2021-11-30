@@ -21,8 +21,8 @@ public class MediaPlayer {
 		 clip.open(audioInput);
 		 clip.start();
 		 clip.loop(Clip.LOOP_CONTINUOUSLY);
+
 		 
-		 JOptionPane.showInputDialog(null,"PressOK to stop playing ");
 	 }
 	 else {
 		 System.out.print("cant find file");

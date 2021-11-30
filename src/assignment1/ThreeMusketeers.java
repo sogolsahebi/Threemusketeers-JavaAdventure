@@ -11,6 +11,7 @@ public class ThreeMusketeers implements GameObservable{
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
+    
     private AduioAdapter audio = new AduioAdapter(new MediaPlayer());
     private HintFactory hintFactory = new HintFactory();
     private Hint hint1, hint2;
