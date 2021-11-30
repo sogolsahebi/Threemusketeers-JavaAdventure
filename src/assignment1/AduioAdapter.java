@@ -3,10 +3,9 @@ package assignment1;
 
 public class AduioAdapter implements MoveInterface{
 	
-	MediaPLayer mediaPlayer = new MediaPLayer();
-	Move move;
+	MediaPlayer mediaPlayer = new MediaPlayer();
 	
-	public AduioAdapter(MediaPLayer mediaPlayer) {
+	public AduioAdapter(MediaPlayer mediaPlayer) {
 		this.mediaPlayer = mediaPlayer;
 	}
 	
@@ -14,8 +13,10 @@ public class AduioAdapter implements MoveInterface{
     public String toString(){ 
 		return  "choose the sound effect(optional)" ;
 	}
-	public MediaPLayer playaudio(){
-		return new MediaPLayer();
+	public void playaudio(String filepath){
+		
+		mediaPlayer.play(filepath);
 			
+		
 	}
 }

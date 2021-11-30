@@ -18,11 +18,11 @@ public class HumanAgent extends Agent {
      * @return the valid human inputted Move
      */
     @Override
-    public Move getMove() { // TODO
+    public Move getMove(IMoveStrategy.MoveType moveType) { // TODO
 
     	System.out.println("Please enter a valid move by entering a digit representing the validMove from allPossibleMoves: ");
 
-    	List<Move> all_possible_moves = this.board.getPossibleMoves();
+    	List<Move> all_possible_moves = this.board.getPossibleMoves(moveType);
     	
     	int index = 0;
     	

@@ -2,18 +2,25 @@ package assignment1;
 //Hey this is A3's assignment1
 
 import java.util.ArrayList;
-
-
 import java.util.List;
 import java.util.Scanner;
 
-public class ThreeMusketeers {
+public class ThreeMusketeers implements GameObservable{
 
     private final Board board;
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
-    private AduioAdapter audio;
+    private AduioAdapter audio = new AduioAdapter(new MediaPlayer());
+    private HintFactory hintFactory = new HintFactory();
+    private Hint hint1, hint2;
+    
+    
+
+    
+    private Audience newRandomMember;		// = new Audience();		// 1 member in the audience, yea.
+    private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything
+    
 
     // All possible game modes
     public enum GameMode {
@@ -31,9 +38,12 @@ public class ThreeMusketeers {
      * Default constructor to load Starter board
      */
     public ThreeMusketeers() {
-        this.board = new Board(); 
+        this.board = new Board();
+        this.hint1 = hintFactory.createHint(this.board, 0);
+        this.hint2 = hintFactory.createHint(this.board, 1);
+        this.newRandomMember = new Audience();
         
-
+        this.registerObserver(newRandomMember);
     }
 
     /**
@@ -41,7 +51,25 @@ public class ThreeMusketeers {
      * @param boardFilePath filepath of custom board
      */
     public ThreeMusketeers(String boardFilePath) {
-        this.board = new Board(boardFilePath); 
+        this.board = new Board(boardFilePath);
+        this.hint1 = hintFactory.createHint(this.board, 0);
+        this.hint2 = hintFactory.createHint(this.board, 1);
+        this.newRandomMember = new Audience("Joe", "KILL EM ALL");
+        
+        this.registerObserver(newRandomMember);
+    }
+    
+    /**
+     * Constructor to load saved board with saved hints and audience
+     * @param boardFilePath filepath of custom board, randomHintFilePath filepath of random hint,
+     *        greedyHintFilePath filepath of greedy hint, audienceFilePath filepath of audience
+     */
+    public ThreeMusketeers(String boardFilePath, String randomHintFilePath, String greedyHintFilePath, String audienceFilePath) {
+        this.board = new Board(boardFilePath);
+        this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
+        this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
+        this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
+        this.registerObserver(newRandomMember);
     }
 
     /**
@@ -61,6 +89,52 @@ public class ThreeMusketeers {
     public void play(GameMode mode){
         selectMode(mode);
         runGame();
+    }
+    
+    /**
+     * Select to start a new game or load a saved game
+     */
+    public void newOrLoad() {
+    	
+    	switch(getStartOption()) {
+    	
+    		case "N":
+    			play();
+    			break;
+    		case "L":
+    			load();
+    			break;
+    	
+    	}
+    	
+    }
+    
+    /**
+     * Get the user input to load the board
+     */
+    public void load() {
+    	
+    	System.out.println("Enter the year when you save the board(four digits): ");
+    	String year = scanner.next();
+    	System.out.println("Enter the month when you save the board(two digits): ");
+    	String month = scanner.next();
+    	System.out.println("Enter the day when you save the board(two digits): ");
+    	String day = scanner.next();
+    	System.out.println("Enter the hour when you save the board(two digits): ");
+    	String hour = scanner.next();
+    	System.out.println("Enter the minute when you save the board(two digits): ");
+    	String minute = scanner.next();
+    	System.out.println("Enter the second when you save the board(two digits): ");
+    	String second = scanner.next();
+    	String time = year + "." + month + "." + day + "." + hour + "." + minute + "." + second;
+    	String boardFilePath = "Boards/" + time + ".txt";
+    	String randomHintFilePath = "Hint/random" + time + ".txt";
+    	String greedyHintFilePath = "Hint/greedy" + time + ".txt";
+    	String audienceFilePath = "Reactions/" + time + ".txt";
+    	
+    	ThreeMusketeers game = new ThreeMusketeers(boardFilePath, randomHintFilePath, greedyHintFilePath, audienceFilePath);
+    	game.play();
+	
     }
 
     /**
@@ -108,7 +182,28 @@ public class ThreeMusketeers {
             if (currentAgent instanceof HumanAgent) // Human move
                 switch (getInputOption()) {
                     case "M":
-                        move(currentAgent);
+                        move(currentAgent, IMoveStrategy.MoveType.REGULAR);
+                        
+                        
+                        	//System.out.println("Hey does Audience even work??");
+                        // **** CODE BELOW ****: is for doing the reactions, each member in the audience should react. Each observer must also be updated (obervers are members of the audience)
+                           for(Audience member : this.audienceMembers) {
+                           	
+                           	member.react();
+                           	
+                           	// WARNING remove thi print statement!
+                           	//System.out.println("Hey does Audience even work??");
+                           	
+                           }
+                       
+                           
+                           
+                           
+                           // **** notifies observers
+                           this.notifyObservers();
+                           
+                        
+                
                         break;
                     case "U":
                         if (moves.size() == 0) {
@@ -124,17 +219,77 @@ public class ThreeMusketeers {
                         }
                         break;
                     case "S":
-                        board.saveBoard();
+                        saveOptions();
                         break;
+                    case "X":
+                    	move(currentAgent, IMoveStrategy.MoveType.SPECIAL);
+                    	break;
+                    case "H":
+                    	hintOptions();
+                    	break;
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
-                move(currentAgent);
+                move(currentAgent, IMoveStrategy.MoveType.REGULAR);
             }
         }
 
         System.out.println(board);
         System.out.printf("\n%s won!%n", board.getWinner().getType());
+    }
+    
+    private void saveOptions() {
+    	
+    	switch(getSaveOption()) {
+    	
+    		case "H":
+    			SaveBuilder h = new SaveHint(board, hint1, hint2);
+    			Save hs = h.getSave();
+    			hs.save();
+    			break;
+    		case "A":
+    			SaveBuilder a = new SaveAudience(board, newRandomMember);
+    			Save as = a.getSave();
+    			as.save();
+    			break;
+    		case "B":
+    			SaveBuilder b = new SaveBoard(board);
+    			Save bs = b.getSave();
+    			bs.save();
+    			break;
+    		case "E":
+    			SaveBuilder e = new SaveEverything(board, hint1, hint2, newRandomMember);
+    			Save es = e.getSave();
+    			es.save();
+    			break;
+    	
+    	}
+    	
+    }
+    
+    private void hintOptions() {
+    	
+    	switch(getHintOption()) {
+    	
+		case "O":
+			Move hintMove1 = hint1.getHint();
+			if (hintMove1 != null) {
+				
+				System.out.println("The hint is: " + hintMove1);
+				
+			}
+			break;
+		case "T":
+			Move hintMove2 = hint2.getHint();
+			if (hintMove2 != null) {
+				
+				System.out.println("The hint is: " + hintMove2);
+				
+			}
+			break;
+	
+    	}
+    	
     }
 
     /**
@@ -143,8 +298,8 @@ public class ThreeMusketeers {
      * @param agent Agent to get the move from.
      */
     
-    protected Move move(final Agent agent) {
-        final Move move = agent.getMove();
+    protected Move move(final Agent agent, IMoveStrategy.MoveType moveType) {
+        final Move move = agent.getMove(moveType);
         this.move(move);
         return move;
     }
@@ -188,12 +343,57 @@ public class ThreeMusketeers {
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSmus]")) {
-            System.out.print("Invalid option. Enter 'M', 'U', or 'S': ");
+        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
+        while (!scanner.hasNext("[MUSXHmusxh]")) {
+            System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H' or 'S': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
+    }
+    
+    /**
+     * Get human input for save action
+     * @return the selected save action, 'H': save hint with board, 'A': save audience with board,
+     *         'B': save board only, 'E': save everything
+     */
+    private String getSaveOption() {
+        System.out.printf("[%s] Enter 'H' to save hint with the board, 'A' to save audience with the board, "
+        		+ "'B' to save the board alone, or 'E' to save everything: ", board.getTurn().getType());
+        while (!scanner.hasNext("[HABEhabe]")) {
+            System.out.print("Invalid option. Enter 'H', 'A', 'B', or 'E': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    }
+    
+    /**
+     * Get human input for hint option
+     * @return the selected hint option, 'O': level one hint, 'T': level two hint
+     */
+    private String getHintOption() {
+    	
+    	System.out.printf("[%s] Enter 'O' to get level one hint, or 'T' to get level two hint: ", board.getTurn().getType());
+        while (!scanner.hasNext("[OTot]")) {
+            System.out.print("Invalid option. Enter 'O', or 'T': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    	
+    }
+    
+    /**
+     * Get human input for start option
+     * @return the selected start option, 'N': new game, 'L': load game
+     */
+    private String getStartOption() {
+    	
+    	System.out.printf("Enter 'N' to start a new game, or 'L' to load a saved game: ", board.getTurn().getType());
+        while (!scanner.hasNext("[NLnl]")) {
+            System.out.print("Invalid option. Enter 'N', or 'L': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    	
     }
 
     /**
@@ -222,6 +422,7 @@ public class ThreeMusketeers {
      * @return the chosen GameMode
      */
     private GameMode getModeInput() {
+    	this.audio.playaudio("sound/audioTrack1.wav");
         System.out.println("""
                     0: Human vs Human
                     1: Human vs Computer (Random)
@@ -240,10 +441,66 @@ public class ThreeMusketeers {
     }
 
     public static void main(String[] args) {
-        String boardFileName = "Boards/Starter.txt";
+        String boardFileName = "boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
         game.play();
-        game.audio.playaudio();
-        
+        game.audio.playaudio("sound/audioTrack1.wav");
+        game.newOrLoad();
     }
+    
+    
+    
+    @Override
+	public void registerObserver(Audience member) {
+		
+		
+		audienceMembers.add(member);
+		
+		
+		// ***********I
+		// OLD CODE BELOW DELETE, SINCE OLD CODE USES NORMAL ARRAY, GOOD CODE = ARRAYLIST.
+		
+//		// ******** NOTE ************: single observer, so we just made 1 audience member caalled newRandomMember.
+//		
+//		// **** CODE BELOW IS FOR ATTATCHING AN OBSERVER TO AN ARRAY OF LENGTH 1 **** ////
+//        for(int i = 0; i < this.audienceMembers.length; i ++) {
+//        	
+//        	if(this.audienceMembers[i] == null ) {
+//        		
+//        		this.audienceMembers[i] = member;		// newRandomMember;				// this is the new random member
+//        	}
+//        }
+//        
+        // **** CODE ABOVE IS FOR ATTATCHING AN OBSERVER TO AN ARRAY OF LENGTH 1 **** ////
+		// **** WARNING *** almost pointless unless its a list of audience, create a list of size 1 lol
+		
+		
+	}
+
+	@Override
+	public void unregisterObserver(Audience member) {
+		
+		// pre-cond: assuming member is a valid observer of the observable (meaning, member is an audience member of ThreeMusketeers)
+		
+		
+		int the_index = this.audienceMembers.indexOf(member);
+		
+		if(the_index >= 0) {
+			this.audienceMembers.remove(the_index);			// silently fails, if the index is >= 0, it is good, since it is definitely a valid one, only if index is < 0 ie -1 it is invalid.
+															// ^ in the case of an invalid index, it just does nothing = silently fails which is okay but not ideal.
+			
+		}
+		
+		
+	}
+
+	@Override
+	public void notifyObservers() {
+		
+		for(Audience member : this.audienceMembers) {
+			
+			member.update();
+		}
+		
+	}
 }

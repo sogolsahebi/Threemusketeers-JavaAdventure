@@ -19,13 +19,14 @@ public class GreedyAgent extends Agent {
      * @return a valid Move that the GreedyAgent can perform on the Board
      */
     @Override
-    public Move getMove() {
+    public Move getMove(IMoveStrategy.MoveType moveType) {
         boardCopy = new Board(board);
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         Move chosenMove = null;
 
-        List<Move> possibleMoves = boardCopy.getPossibleMoves();
+        List<Move> possibleMoves = boardCopy.getPossibleMoves(IMoveStrategy.MoveType.REGULAR);
         System.out.println("Moves:" + possibleMoves);
+//        System.out.println("Moves:" + possibleMoves);
         for (Move move: possibleMoves) {
         	
             Move moveCopy = new Move(move);
@@ -34,7 +35,7 @@ public class GreedyAgent extends Agent {
 
             double score = this.minimax(depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            System.out.printf("Move: %s Score: %.2f\n", move, score);
+//            System.out.printf("Move: %s Score: %.2f\n", move, score);
             if (turn.equals(Piece.Type.MUSKETEER) && score > bestScore) {
             	
                 bestScore = score;
@@ -53,9 +54,9 @@ public class GreedyAgent extends Agent {
         }
 
         assert chosenMove != null;
-        System.out.printf("[%s (Greedy Agent)] Moving piece %s to %s. Best Score: %.2f\n",
-                board.getTurn().getType(), chosenMove.fromCell.getCoordinate(), chosenMove.toCell.getCoordinate(),
-                bestScore);
+//        System.out.printf("[%s (Greedy Agent)] Moving piece %s to %s. Best Score: %.2f\n",
+//                board.getTurn().getType(), chosenMove.fromCell.getCoordinate(), chosenMove.toCell.getCoordinate(),
+//                bestScore);
         return new Move(
                 board.getCell(chosenMove.fromCell.getCoordinate()),
                 board.getCell(chosenMove.toCell.getCoordinate()));
@@ -80,7 +81,7 @@ public class GreedyAgent extends Agent {
 
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
-        List<Move> possibleMoves = boardCopy.getPossibleMoves();
+        List<Move> possibleMoves = boardCopy.getPossibleMoves(IMoveStrategy.MoveType.REGULAR);
         for (Move move: possibleMoves) {
         	
             Move moveCopy = new Move(move);
