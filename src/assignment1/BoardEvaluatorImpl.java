@@ -47,8 +47,6 @@ public class BoardEvaluatorImpl implements BoardEvaluator {
 
     private double getMusketeerDistanceScore(Board board) {
         List<Cell> musketeerCells = board.getMusketeerCells();
-        int i = 0;
-        for (Cell musketeerCell : musketeerCells) {System.out.println(i); i++; }
         
         Cell c1 = musketeerCells.get(0);
         Cell c2 = musketeerCells.get(1);

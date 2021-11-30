@@ -24,7 +24,7 @@ public class GreedyAgent extends Agent {
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         Move chosenMove = null;
 
-        List<Move> possibleMoves = boardCopy.getMoveStrategy(moveType).getPossibleMoves(boardCopy);
+        List<Move> possibleMoves = boardCopy.getPossibleMoves(IMoveStrategy.MoveType.REGULAR);
         System.out.println("Moves:" + possibleMoves);
 //        System.out.println("Moves:" + possibleMoves);
         for (Move move: possibleMoves) {
@@ -33,7 +33,7 @@ public class GreedyAgent extends Agent {
             Piece.Type turn = boardCopy.getTurn();
             boardCopy.move(move);
 
-            double score = this.minimax(depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, moveType);
+            double score = this.minimax(depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 //            System.out.printf("Move: %s Score: %.2f\n", move, score);
             if (turn.equals(Piece.Type.MUSKETEER) && score > bestScore) {
@@ -71,7 +71,7 @@ public class GreedyAgent extends Agent {
      * @param beta  value used for alpha beta pruning
      * @return Score of the board after the optimal move
      */
-    private double minimax(int depth, double alpha, double beta, IMoveStrategy.MoveType moveType) {
+    private double minimax(int depth, double alpha, double beta) {
     	
         if (depth == 0 || boardCopy.isGameOver()) {
         	
@@ -81,14 +81,14 @@ public class GreedyAgent extends Agent {
 
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
-        List<Move> possibleMoves = boardCopy.getMoveStrategy(moveType).getPossibleMoves(board);
+        List<Move> possibleMoves = boardCopy.getPossibleMoves(IMoveStrategy.MoveType.REGULAR);
         for (Move move: possibleMoves) {
         	
             Move moveCopy = new Move(move);
             Piece.Type turn = boardCopy.getTurn();
             boardCopy.move(move);
 
-            double score = this.minimax(depth - 1, alpha, beta, moveType);
+            double score = this.minimax(depth - 1, alpha, beta);
 
             if (turn.equals(Piece.Type.MUSKETEER)) {
             	
