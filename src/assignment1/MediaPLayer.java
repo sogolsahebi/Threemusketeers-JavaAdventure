@@ -28,7 +28,7 @@ public class MediaPLayer {
 	
 	public MediaPLayer() {
 		window = new JFrame();
-		window.setSize(400 , 300);
+		window.setSize(8 , 300);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.black);
 		window.setLayout(null);
@@ -36,7 +36,7 @@ public class MediaPLayer {
 		window.setVisible(true);
 		
 		buttonPanel = new JPanel();
-		buttonPanel.setBounds(150, 150,100,50);
+		buttonPanel.setBounds(300, 300,200,100);
 		buttonPanel.setBackground(Color.black);
 		con.add(buttonPanel);
 		

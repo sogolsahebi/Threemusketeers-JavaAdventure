@@ -14,9 +14,8 @@ public class AduioAdapter implements MoveInterface{
     public String toString(){ 
 		return  "choose the sound effect(optional)" ;
 	}
-	
 	public MediaPLayer playaudio(){
-		return this.mediaPlayer;
+		return new MediaPLayer();
 			
 	}
 }
