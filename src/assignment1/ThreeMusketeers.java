@@ -41,6 +41,8 @@ public class ThreeMusketeers implements GameObservable{
         this.hint1 = hintFactory.createHint(this.board, 0);
         this.hint2 = hintFactory.createHint(this.board, 1);
         this.newRandomMember = new Audience();
+        
+        this.registerObserver(newRandomMember);
     }
 
     /**
@@ -52,6 +54,8 @@ public class ThreeMusketeers implements GameObservable{
         this.hint1 = hintFactory.createHint(this.board, 0);
         this.hint2 = hintFactory.createHint(this.board, 1);
         this.newRandomMember = new Audience("Joe", "KILL EM ALL");
+        
+        this.registerObserver(newRandomMember);
     }
     
     /**
@@ -64,6 +68,8 @@ public class ThreeMusketeers implements GameObservable{
         this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
         this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);
+        
+        this.registerObserver(newRandomMember);
     }
 
     /**
@@ -179,11 +185,15 @@ public class ThreeMusketeers implements GameObservable{
                         move(currentAgent, IMoveStrategy.MoveType.REGULAR);
                         
                         
-
+                        	//System.out.println("Hey does Audience even work??");
                         // **** CODE BELOW ****: is for doing the reactions, each member in the audience should react. Each observer must also be updated (obervers are members of the audience)
                            for(Audience member : this.audienceMembers) {
                            	
                            	member.react();
+                           	
+                           	// WARNING remove thi print statement!
+                           	//System.out.println("Hey does Audience even work??");
+                           	
                            }
                        
                            
