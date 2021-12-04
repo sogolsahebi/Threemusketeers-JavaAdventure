@@ -12,6 +12,7 @@ public class ThreeMusketeers implements GameObservable{
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
 
+
     private AduioAdapter audio = new AduioAdapter(new MediaPlayer());
     private HintFactory hintFactory = new HintFactory();
     private Hint hint1, hint2;
@@ -69,8 +70,8 @@ public class ThreeMusketeers implements GameObservable{
         this.board = new Board(boardFilePath);
         this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
-        this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
 
+        this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
 
         this.registerObserver(newRandomMember);
     }
@@ -354,8 +355,6 @@ public class ThreeMusketeers implements GameObservable{
         }
         return scanner.next().toUpperCase();
     }
-    
-
 
     
     /**
@@ -450,6 +449,7 @@ public class ThreeMusketeers implements GameObservable{
     public static void main(String[] args) {
         String boardFileName = "boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
+
 
         game.play();
         game.audio.playaudio("sound/audioTrack1.wav");
