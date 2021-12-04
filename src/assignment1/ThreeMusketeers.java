@@ -227,6 +227,16 @@ public class ThreeMusketeers implements GameObservable{
                     case "H":
                     	hintOptions();
                     	break;
+                    	
+                    case "C": 			// CHANGE AGENT HERE: (cool feature to change difficulty mid game, like hints = adding useful info, special move = spice up game, 
+    					// save/undo = nessesary features, undo is cool for trying better moves.
+			    					// all these features (including audio) spice up the game; make it more interesting, fun, engaging and stimulating to play...
+				    	final GameMode mode = getModeInput();
+				    	
+				    	selectMode(mode);
+				    	
+				    	break;
+                    	
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
@@ -343,9 +353,9 @@ public class ThreeMusketeers implements GameObservable{
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSXHmusxh]")) {
-            System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H' or 'S': ");
+        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, 'S' to save, and 'C' to change agent: ", board.getTurn().getType());
+        while (!scanner.hasNext("[MUSXHCmusxhc]")) {
+            System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H', 'S' or 'C': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
