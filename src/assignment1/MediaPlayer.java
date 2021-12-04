@@ -17,11 +17,20 @@ public class MediaPlayer {
 	 if(musicPath.exists()) {
 		 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
 		 Clip clip = AudioSystem.getClip();
-	
 		 clip.open(audioInput);
 		 clip.start();
 		 clip.loop(Clip.LOOP_CONTINUOUSLY);
-
+		 JOptionPane.showMessageDialog(null , "Hit ok to pause");
+		 long clipTimePosition = clip.getMicrosecondPosition();
+		 clip.stop();
+		 
+		 JOptionPane.showMessageDialog(null , "Hit ok to resume");
+		 clip.setMicrosecondPosition(clipTimePosition);
+		 clip.start();
+		  
+		 JOptionPane.showMessageDialog(null , "Press Ok to stop play");
+		 
+	
 		 
 	 }
 	 else {
