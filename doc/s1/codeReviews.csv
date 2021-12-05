@@ -4,10 +4,9 @@ DEV-12, Audience feature, BingMing Zhang, https://github.com/UTMCSC207/assignmen
 DEV-11, Save Feature, Thomas Kolman, https://github.com/UTMCSC207/assignment3-the-three-plus-one-musketeers/pull/3, Perfectly fine code but needs additional functionality
 DEV-11, Save feature, Razi Messinger, https://github.com/UTMCSC207/assignment3-the-three-plus-one-musketeers/pull/11, good code but bug testing is a good idea
 DEV-13, Save feature and hint feature combined, Razi Messinger, https://github.com/UTMCSC207/assignment3-the-three-plus-one-musketeers/pull/5,this code is good in combining audience with save and hint 
+
+<<<<<<< HEAD
+
 DEV_11 ,save feature ,Nasim Bondar Sahebi,https://github.com/UTMCSC207/assignment3-the-three-plus-one-musketeers/pull/4, no error and works fine
 DEV-14, Audo Feature, Thomas Kolman, https://github.com/UTMCSC207/assignment3-the-three-plus-one-musketeers/pull/14, merging errors so could not commit but otherwise fine
-<<<<<<< HEAD
-,,,,
-=======
-
 >>>>>>> master
