@@ -19,7 +19,7 @@ public class GreedyAgent extends Agent {
      * @return a valid Move that the GreedyAgent can perform on the Board
      */
     @Override
-    public Move getMove(IMoveStrategy.MoveType moveType) {
+    public Move getMove(IMoveStrategy moveType) {
         boardCopy = new Board(board);
         double bestScore = boardCopy.getTurn().equals(Piece.Type.MUSKETEER) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         Move chosenMove = null;
