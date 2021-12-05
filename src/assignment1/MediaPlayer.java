@@ -45,7 +45,7 @@ public class MediaPlayer {
 			
 			long elapsedTime = current_time - original_time;
 		
-			long five_seconds = 5000;
+			long five_seconds = 8000;
 			
 			if (elapsedTime >   five_seconds) {
 				time_up = true;
