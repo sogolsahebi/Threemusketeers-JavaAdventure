@@ -14,8 +14,7 @@ public class ThreeMusketeers implements GameObservable{
     private HintFactory hintFactory = new HintFactory();
     private Hint hint1, hint2;
     private Audience newRandomMember;		// = new Audience();		// 1 member in the audience, yea.
-    private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything
-    private AudioAdapter audio = new AudioAdapter(new MediaPlayer()); 
+    private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything 
     private final IMoveStrategy regularMove = new RegularMove();
     private final IMoveStrategy specialMove = new SpecialMove();
 
@@ -41,6 +40,7 @@ public class ThreeMusketeers implements GameObservable{
         this.newRandomMember = new Audience();
         
         this.registerObserver(newRandomMember);
+        Audio.playAudio("sound/rickAstley.wav");
     }
 
     /**
@@ -124,7 +124,7 @@ public class ThreeMusketeers implements GameObservable{
     	System.out.println("Enter the second when you save the board(two digits): ");
     	String second = scanner.next();
     	String time = year + "." + month + "." + day + "." + hour + "." + minute + "." + second;
-    	String boardFilePath = "Boards/" + time + ".txt";
+    	String boardFilePath = "boards/" + time + ".txt";
     	String randomHintFilePath = "Hint/random" + time + ".txt";
     	String greedyHintFilePath = "Hint/greedy" + time + ".txt";
     	String audienceFilePath = "Reactions/" + time + ".txt";
@@ -180,27 +180,8 @@ public class ThreeMusketeers implements GameObservable{
                 switch (getInputOption()) {
                     case "M":
                         move(currentAgent, regularMove);
-                        
-                        
                         	//System.out.println("Hey does Audience even work??");
                         // **** CODE BELOW ****: is for doing the reactions, each member in the audience should react. Each observer must also be updated (obervers are members of the audience)
-                           for(Audience member : this.audienceMembers) {
-                           	
-                           	member.react();
-                           	
-                           	// WARNING remove thi print statement!
-                           	//System.out.println("Hey does Audience even work??");
-                           	
-                           }
-                       
-                           
-                           
-                           
-                           // **** notifies observers
-                           this.notifyObservers();
-                           
-                        
-                
                         break;
                     case "U":
                         if (moves.size() == 0) {
@@ -309,7 +290,20 @@ public class ThreeMusketeers implements GameObservable{
         final Move move = agent.getMove(moveType);
         moves.add(new Move(move));
         board.move(move);
-        moveType.playAudio("sound/audioTrack1.wav");
+        
+        int emotionalScore = 0;
+        for(Audience member : this.audienceMembers) {
+     	   emotionalScore = member.react();	
+        }
+        this.notifyObservers();
+        
+        if ((0 <= emotionalScore) && (emotionalScore < 5)) {
+        	moveType.playAudio("sound/audioTrack1.wav");
+        } else if ((5 <= emotionalScore) && (emotionalScore < 10)){
+        	moveType.playAudio("sound/audioTrack1.wav");
+        } else {
+        	moveType.playAudio("sound/audioTrack1.wav");
+        }
         return move;	
     }
 
@@ -423,7 +417,6 @@ public class ThreeMusketeers implements GameObservable{
      * @return the chosen GameMode
      */
     private GameMode getModeInput() {
-    	Audio.playAudio("sound/rickAstley.wav");
         System.out.println("""
                     0: Human vs Human
                     1: Human vs Computer (Random)
@@ -443,11 +436,11 @@ public class ThreeMusketeers implements GameObservable{
 
     public static void main(String[] args) {
         String boardFileName = "boards/Starter.txt";
-        ThreeMusketeers game = new ThreeMusketeers(boardFileName);
-
-        //sprint hellow word
-        game.play();
-        game.newOrLoad();
+        
+        while (true) {
+        	ThreeMusketeers game = new ThreeMusketeers(boardFileName);
+        	game.newOrLoad();
+        }
     }
     
     
@@ -500,7 +493,6 @@ public class ThreeMusketeers implements GameObservable{
 	public void notifyObservers() {
 		
 		for(Audience member : this.audienceMembers) {
-			
 			member.update();
 		}
 		
