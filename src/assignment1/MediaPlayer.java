@@ -20,15 +20,64 @@ public class MediaPlayer {
 		 clip.open(audioInput);
 		 clip.start();
 		 clip.loop(Clip.LOOP_CONTINUOUSLY);
-		 JOptionPane.showMessageDialog(null , "Hit ok to pause");
-		 long clipTimePosition = clip.getMicrosecondPosition();
-		 clip.stop();
 		 
-		 JOptionPane.showMessageDialog(null , "Hit ok to resume");
-		 clip.setMicrosecondPosition(clipTimePosition);
-		 clip.start();
-		  
-		 JOptionPane.showMessageDialog(null , "Press Ok to stop play");
+//		 clip.playcontinously
+//		 
+//		 
+//		 
+		 
+//		long start = System.currentTimeMillis();
+//		// some time passes
+//		long end = System.currentTimeMillis();
+//		long elapsedTime = end - start;
+		 
+		
+	
+
+		long original_time = System.currentTimeMillis();
+		
+		
+		boolean time_up = false;
+		
+		while(!time_up) {
+			
+			long current_time = System.currentTimeMillis();
+			
+			long elapsedTime = current_time - original_time;
+		
+			long five_seconds = 5000;
+			
+			if (elapsedTime >   five_seconds) {
+				time_up = true;
+						
+						
+				clip.stop();
+				
+			}
+				
+			
+		}
+			
+
+
+				
+				
+		 
+		 
+		 
+		 //clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+		 
+		 
+		 //		 JOptionPane.showMessageDialog(null , "Hit ok to pause");
+//		 long clipTimePosition = clip.getMicrosecondPosition();
+//		 clip.stop();
+//		 
+//		 JOptionPane.showMessageDialog(null , "Hit ok to resume");
+//		 clip.setMicrosecondPosition(clipTimePosition);
+//		 clip.start();
+//		  
+//		 JOptionPane.showMessageDialog(null , "Press Ok to stop play");
 		 
 	
 		 
