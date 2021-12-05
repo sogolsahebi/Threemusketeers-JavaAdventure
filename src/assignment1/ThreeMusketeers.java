@@ -430,7 +430,7 @@ public class ThreeMusketeers implements GameObservable{
      * @return the chosen GameMode
      */
     private GameMode getModeInput() {
-    	this.audio.playaudio("sound/audioTrack1.wav");
+    	this.audio.playaudio("sound/rickAstley.wav");
         System.out.println("""
                     0: Human vs Human
                     1: Human vs Computer (Random)
