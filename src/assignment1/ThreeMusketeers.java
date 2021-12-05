@@ -11,6 +11,15 @@ public class ThreeMusketeers implements GameObservable{
     private Agent musketeerAgent, guardAgent;
     private final Scanner scanner = new Scanner(System.in);
     private final List<Move> moves = new ArrayList<>();
+    private HintFactory hintFactory = new HintFactory();
+    private Hint hint1, hint2;
+    
+    
+
+    
+    private Audience newRandomMember;		// = new Audience();		// 1 member in the audience, yea.
+    private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything
+    
 
 
     private AduioAdapter audio = new AduioAdapter(new MediaPlayer());
@@ -70,9 +79,14 @@ public class ThreeMusketeers implements GameObservable{
         this.board = new Board(boardFilePath);
         this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
+<<<<<<< HEAD
 
         this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
 
+=======
+        this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);
+        
+>>>>>>> master
         this.registerObserver(newRandomMember);
     }
 
@@ -350,10 +364,58 @@ public class ThreeMusketeers implements GameObservable{
         System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
         while (!scanner.hasNext("[MUSXHmusxh]")) {
             System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H' or 'S': ");
+<<<<<<< HEAD
 
+=======
             scanner.next();
         }
         return scanner.next().toUpperCase();
+    }
+    
+    /**
+     * Get human input for save action
+     * @return the selected save action, 'H': save hint with board, 'A': save audience with board,
+     *         'B': save board only, 'E': save everything
+     */
+    private String getSaveOption() {
+        System.out.printf("[%s] Enter 'H' to save hint with the board, 'A' to save audience with the board, "
+        		+ "'B' to save the board alone, or 'E' to save everything: ", board.getTurn().getType());
+        while (!scanner.hasNext("[HABEhabe]")) {
+            System.out.print("Invalid option. Enter 'H', 'A', 'B', or 'E': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    }
+    
+    /**
+     * Get human input for hint option
+     * @return the selected hint option, 'O': level one hint, 'T': level two hint
+     */
+    private String getHintOption() {
+    	
+    	System.out.printf("[%s] Enter 'O' to get level one hint, or 'T' to get level two hint: ", board.getTurn().getType());
+        while (!scanner.hasNext("[OTot]")) {
+            System.out.print("Invalid option. Enter 'O', or 'T': ");
+>>>>>>> master
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    	
+    }
+    
+    /**
+     * Get human input for start option
+     * @return the selected start option, 'N': new game, 'L': load game
+     */
+    private String getStartOption() {
+    	
+    	System.out.printf("Enter 'N' to start a new game, or 'L' to load a saved game: ", board.getTurn().getType());
+        while (!scanner.hasNext("[NLnl]")) {
+            System.out.print("Invalid option. Enter 'N', or 'L': ");
+            scanner.next();
+        }
+        return scanner.next().toUpperCase();
+    	
     }
 
     
@@ -449,9 +511,12 @@ public class ThreeMusketeers implements GameObservable{
     public static void main(String[] args) {
         String boardFileName = "boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
+<<<<<<< HEAD
 
         //sprint hellow word
         game.play();
+=======
+>>>>>>> master
         game.newOrLoad();
     }
     
