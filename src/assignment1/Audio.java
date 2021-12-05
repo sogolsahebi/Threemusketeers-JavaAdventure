@@ -1,7 +1,12 @@
 package assignment1;
 
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 public class Audio extends Thread{
-	private MediaPlayer mediaPlayer = new MediaPlayer();
 	private String path = new String();
 	
 	public Audio(String path) {
@@ -14,20 +19,28 @@ public class Audio extends Thread{
 	}
 	
 	public void run() {
-		long originalTime = System.currentTimeMillis();
-		boolean timesUp = false;
-		
-		mediaPlayer.play(path);
-		while (!timesUp) {
-			long elapsedTime = System.currentTimeMillis() - originalTime;
-			
-			if (elapsedTime > 5000) {
-				mediaPlayer.play
+		try {
+			File musicPath = new File(path);
+			if(musicPath.exists()) {
+				AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+				Clip clip = AudioSystem.getClip();
+				clip.open(audioInput);
+				clip.start();
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+				long original_time = System.currentTimeMillis();
+				boolean time_up = false;
+				while(!time_up) {
+					long current_time = System.currentTimeMillis();
+					long elapsedTime = current_time - original_time;
+					long five_seconds = 5000;
+					if (elapsedTime >   five_seconds) {
+						time_up = true;
+						clip.stop();	
+					}	
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		Thread.sleep(5000);
-		
-		return;
 	}
 }
