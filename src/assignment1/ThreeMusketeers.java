@@ -79,14 +79,7 @@ public class ThreeMusketeers implements GameObservable{
         this.board = new Board(boardFilePath);
         this.hint1 = hintFactory.loadHint(this.board, 0, randomHintFilePath);
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
-<<<<<<< HEAD
-
         this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
-
-=======
-        this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);
-        
->>>>>>> master
         this.registerObserver(newRandomMember);
     }
 
@@ -245,6 +238,16 @@ public class ThreeMusketeers implements GameObservable{
                     case "H":
                     	hintOptions();
                     	break;
+                    	
+                    case "C": 			// CHANGE AGENT HERE: (cool feature to change difficulty mid game, like hints = adding useful info, special move = spice up game, 
+    					// save/undo = nessesary features, undo is cool for trying better moves.
+			    					// all these features (including audio) spice up the game; make it more interesting, fun, engaging and stimulating to play...
+				    	final GameMode mode = getModeInput();
+				    	
+				    	selectMode(mode);
+				    	
+				    	break;
+                    	
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
@@ -361,12 +364,9 @@ public class ThreeMusketeers implements GameObservable{
      * @return the selected move action, 'M': move, 'U': undo, and 'S': save
      */
     private String getInputOption() {
-        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, and 'S' to save: ", board.getTurn().getType());
-        while (!scanner.hasNext("[MUSXHmusxh]")) {
-            System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H' or 'S': ");
-<<<<<<< HEAD
-
-=======
+        System.out.printf("[%s] Enter 'M' to move, 'X' to do a special move, 'H' for a hint, 'U' to undo, 'S' to save, and 'C' to change agent: ", board.getTurn().getType());
+        while (!scanner.hasNext("[MUSXHCmusxhc]")) {
+            System.out.print("Invalid option. Enter 'M', 'U', 'X', 'H', 'S' or 'C': ");
             scanner.next();
         }
         return scanner.next().toUpperCase();
@@ -396,7 +396,6 @@ public class ThreeMusketeers implements GameObservable{
     	System.out.printf("[%s] Enter 'O' to get level one hint, or 'T' to get level two hint: ", board.getTurn().getType());
         while (!scanner.hasNext("[OTot]")) {
             System.out.print("Invalid option. Enter 'O', or 'T': ");
->>>>>>> master
             scanner.next();
         }
         return scanner.next().toUpperCase();
@@ -511,12 +510,9 @@ public class ThreeMusketeers implements GameObservable{
     public static void main(String[] args) {
         String boardFileName = "boards/Starter.txt";
         ThreeMusketeers game = new ThreeMusketeers(boardFileName);
-<<<<<<< HEAD
 
         //sprint hellow word
         game.play();
-=======
->>>>>>> master
         game.newOrLoad();
     }
     
