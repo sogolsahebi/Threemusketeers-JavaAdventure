@@ -1,7 +1,7 @@
 // RE UPDATED class! Should work for A3
 package assignment1;
 
-public class Move implements MoveInterface{
+public class Move{
     final Cell fromCell;
     final Cell toCell;
 

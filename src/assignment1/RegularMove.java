@@ -13,4 +13,8 @@ public class RegularMove implements IMoveStrategy{
     public List<Move> getPossibleMoves(Board board) {
     	return board.getPossibleMoves(directions);
     }
+    
+    public void playAudio(String path) {
+    	Audio.playAudio(path);
+    }
 }

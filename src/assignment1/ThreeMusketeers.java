@@ -15,7 +15,7 @@ public class ThreeMusketeers implements GameObservable{
     private Hint hint1, hint2;
     private Audience newRandomMember;		// = new Audience();		// 1 member in the audience, yea.
     private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything
-    private AduioAdapter audio = new AduioAdapter(new MediaPlayer()); 
+    private AudioAdapter audio = new AudioAdapter(new MediaPlayer()); 
     private final IMoveStrategy regularMove = new RegularMove();
     private final IMoveStrategy specialMove = new SpecialMove();
 
@@ -307,17 +307,10 @@ public class ThreeMusketeers implements GameObservable{
     
     protected Move move(final Agent agent, IMoveStrategy moveType) {
         final Move move = agent.getMove(moveType);
-        this.move(move);
-        return move;
-    }
-
-    /**
-     * Do the given move on the board and add a copy to the moves list.
-     */
- 
-    protected void move(Move move) {
         moves.add(new Move(move));
         board.move(move);
+        moveType.playAudio("sound/audioTrack1.wav");
+        return move;	
     }
 
     /**
@@ -430,7 +423,6 @@ public class ThreeMusketeers implements GameObservable{
      * @return the chosen GameMode
      */
     private GameMode getModeInput() {
-    	this.audio.playaudio("sound/audioTrack1.wav");
         System.out.println("""
                     0: Human vs Human
                     1: Human vs Computer (Random)
