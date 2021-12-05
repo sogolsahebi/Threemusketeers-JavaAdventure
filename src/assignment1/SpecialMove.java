@@ -1,11 +1,10 @@
 package assignment1;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialMove implements IMoveStrategy {
 	
-	private int[][] directions = {{2,0}, {0,2}, {-2,0}, {0,-2}};
+	private final int[][] directions = {{2,0}, {0,2}, {-2,0}, {0,-2}};
 
     /**
      * Get all the possible moves that can be made this turn.

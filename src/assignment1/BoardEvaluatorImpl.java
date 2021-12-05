@@ -38,7 +38,7 @@ public class BoardEvaluatorImpl implements BoardEvaluator {
         List<Cell> musketeerCells = board.getMusketeerCells();
         int numMusketeersCanMove = 0;
         for (Cell musketeerCell: musketeerCells) {
-            if (board.getMoveStrategy(IMoveStrategy.MoveType.REGULAR).getPossibleDestinations(board, musketeerCell).size() > 0) {
+            if (board.getPossibleDestinations(musketeerCell, new int[][]{{1,0}, {0,1}, {0, -1}, {-1,0}}).size() > 0) {
                 numMusketeersCanMove += 1;
             }
         }

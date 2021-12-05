@@ -1,12 +1,10 @@
 package assignment1;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RegularMove implements IMoveStrategy{
 	
-	public RegularMove() {}	
-    int[][] directions = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+    private final int[][] directions = {{1,0}, {0,1}, {-1,0}, {0,-1}};
 
     /**
      * Get all the possible moves that can be made this turn.

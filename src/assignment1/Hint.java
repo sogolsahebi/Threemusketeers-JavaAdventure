@@ -87,7 +87,7 @@ public class Hint {
 			
 		}
 		hintNum = "0";
-		move = agent.getMove(IMoveStrategy.MoveType.REGULAR);
+		move = agent.getMove(new RegularMove());
 		
 		return move;
 		

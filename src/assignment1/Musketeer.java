@@ -1,8 +1,6 @@
 // RE UPDATED class! Should work for A3
 package assignment1;
 
-import assignment1.Piece.Type;
-
 public class Musketeer extends Piece {
 
     public Musketeer() {
