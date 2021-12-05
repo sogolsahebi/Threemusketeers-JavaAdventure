@@ -452,8 +452,6 @@ public class ThreeMusketeers implements GameObservable{
 
 
         game.play();
-        game.audio.playaudio("sound/audioTrack1.wav");
-
         game.newOrLoad();
     }
     
