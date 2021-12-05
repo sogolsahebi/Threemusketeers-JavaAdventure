@@ -13,25 +13,11 @@ public class ThreeMusketeers implements GameObservable{
     private final List<Move> moves = new ArrayList<>();
     private HintFactory hintFactory = new HintFactory();
     private Hint hint1, hint2;
-    
-    
-
-    
     private Audience newRandomMember;		// = new Audience();		// 1 member in the audience, yea.
     private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything
-    
-
-
-    private AduioAdapter audio = new AduioAdapter(new MediaPlayer());
-    private HintFactory hintFactory = new HintFactory();
-    private Hint hint1, hint2;
-    
-    
-
-    
-    private Audience newRandomMember;		// = new Audience();		// 1 member in the audience, yea.
-    private ArrayList<Audience> audienceMembers = new ArrayList<Audience>();		// ******* WARNING ***** ArrayList, size anything
-    
+    private AduioAdapter audio = new AduioAdapter(new MediaPlayer()); 
+    private final IMoveStrategy regularMove = new RegularMove();
+    private final IMoveStrategy specialMove = new SpecialMove();
 
     // All possible game modes
     public enum GameMode {
@@ -193,7 +179,7 @@ public class ThreeMusketeers implements GameObservable{
             if (currentAgent instanceof HumanAgent) // Human move
                 switch (getInputOption()) {
                     case "M":
-                        move(currentAgent, IMoveStrategy.MoveType.REGULAR);
+                        move(currentAgent, regularMove);
                         
                         
                         	//System.out.println("Hey does Audience even work??");
@@ -233,7 +219,7 @@ public class ThreeMusketeers implements GameObservable{
                         saveOptions();
                         break;
                     case "X":
-                    	move(currentAgent, IMoveStrategy.MoveType.SPECIAL);
+                    	move(currentAgent, specialMove);
                     	break;
                     case "H":
                     	hintOptions();
@@ -251,7 +237,7 @@ public class ThreeMusketeers implements GameObservable{
                 }
             else { // Computer move
                 System.out.printf("[%s] Calculating move...\n", currentAgent.getClass().getSimpleName());
-                move(currentAgent, IMoveStrategy.MoveType.REGULAR);
+                move(currentAgent, regularMove);
             }
         }
 
@@ -319,7 +305,7 @@ public class ThreeMusketeers implements GameObservable{
      * @param agent Agent to get the move from.
      */
     
-    protected Move move(final Agent agent, IMoveStrategy.MoveType moveType) {
+    protected Move move(final Agent agent, IMoveStrategy moveType) {
         final Move move = agent.getMove(moveType);
         this.move(move);
         return move;
@@ -416,53 +402,8 @@ public class ThreeMusketeers implements GameObservable{
         return scanner.next().toUpperCase();
     	
     }
-
     
-    /**
-     * Get human input for save action
-     * @return the selected save action, 'H': save hint with board, 'A': save audience with board,
-     *         'B': save board only, 'E': save everything
-     */
-    private String getSaveOption() {
-        System.out.printf("[%s] Enter 'H' to save hint with the board, 'A' to save audience with the board, "
-        		+ "'B' to save the board alone, or 'E' to save everything: ", board.getTurn().getType());
-        while (!scanner.hasNext("[HABEhabe]")) {
-            System.out.print("Invalid option. Enter 'H', 'A', 'B', or 'E': ");
-            scanner.next();
-        }
-        return scanner.next().toUpperCase();
-    }
-    
-    /**
-     * Get human input for hint option
-     * @return the selected hint option, 'O': level one hint, 'T': level two hint
-     */
-    private String getHintOption() {
-    	
-    	System.out.printf("[%s] Enter 'O' to get level one hint, or 'T' to get level two hint: ", board.getTurn().getType());
-        while (!scanner.hasNext("[OTot]")) {
-            System.out.print("Invalid option. Enter 'O', or 'T': ");
-            scanner.next();
-        }
-        return scanner.next().toUpperCase();
-    	
-    }
-    
-    /**
-     * Get human input for start option
-     * @return the selected start option, 'N': new game, 'L': load game
-     */
-    private String getStartOption() {
-    	
-    	System.out.printf("Enter 'N' to start a new game, or 'L' to load a saved game: ", board.getTurn().getType());
-        while (!scanner.hasNext("[NLnl]")) {
-            System.out.print("Invalid option. Enter 'N', or 'L': ");
-            scanner.next();
-        }
-        return scanner.next().toUpperCase();
-    	
-    }
-
+   
     /**
      * Returns whether both sides are human players
      * @return True if both sides are Human, False if one of the sides is a computer
