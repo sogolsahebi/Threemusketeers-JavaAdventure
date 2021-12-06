@@ -5,5 +5,6 @@ import java.util.List;
 public interface IMoveStrategy {
 
 	public List<Move> getPossibleMoves(Board board);
-	public void playAudio(String path);
+	public void playAudio(String path, int time);
 }
+	

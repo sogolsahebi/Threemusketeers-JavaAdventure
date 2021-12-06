@@ -40,7 +40,7 @@ public class ThreeMusketeers implements GameObservable{
         this.newRandomMember = new Audience();
         
         this.registerObserver(newRandomMember);
-        Audio.playAudio("sound/rickAstley.wav");
+        Audio.playAudio("sound/rickAstley.wav", 9200);
     }
 
     /**
@@ -54,6 +54,7 @@ public class ThreeMusketeers implements GameObservable{
         this.newRandomMember = new Audience("Joe", "KILL EM ALL");
         
         this.registerObserver(newRandomMember);
+        Audio.playAudio("sound/rickAstley.wav", 9200);
     }
     
     /**
@@ -67,6 +68,7 @@ public class ThreeMusketeers implements GameObservable{
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
         this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
         this.registerObserver(newRandomMember);
+        Audio.playAudio("sound/rickAstley.wav", 92000);
     }
 
     /**
@@ -298,11 +300,11 @@ public class ThreeMusketeers implements GameObservable{
         this.notifyObservers();
         
         if ((0 <= emotionalScore) && (emotionalScore < 5)) {
-        	moveType.playAudio("sound/audioTrack1.wav");
+        	moveType.playAudio("sound/audioTrack1.wav", 3000);
         } else if ((5 <= emotionalScore) && (emotionalScore < 10)){
-        	moveType.playAudio("sound/audioTrack1.wav");
+        	moveType.playAudio("sound/audioTrack1.wav", 3000);
         } else {
-        	moveType.playAudio("sound/audioTrack1.wav");
+        	moveType.playAudio("sound/audioTrack1.wav", 3000);
         }
         return move;	
     }
