@@ -69,7 +69,7 @@ public class ThreeMusketeers implements GameObservable{
         this.hint2 = hintFactory.loadHint(this.board, 1, greedyHintFilePath);
         this.newRandomMember = new Audience("Joe", "KILL EM ALL", audienceFilePath);  
         this.registerObserver(newRandomMember);
-        Audio.playAudio("sound/rickAstley.wav", 92000);
+        Audio.playAudio("sound/rickAstley.wav", 9200);
     }
 
     /**
