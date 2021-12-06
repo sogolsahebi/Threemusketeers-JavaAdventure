@@ -3,6 +3,7 @@ package assignment1;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ThreeMusketeers implements GameObservable{
@@ -299,13 +300,10 @@ public class ThreeMusketeers implements GameObservable{
         }
         this.notifyObservers();
         
-        if ((0 <= emotionalScore) && (emotionalScore < 5)) {
-        	moveType.playAudio("sound/audioTrack1.wav", 3000);
-        } else if ((5 <= emotionalScore) && (emotionalScore < 10)){
-        	moveType.playAudio("sound/audioTrack1.wav", 3000);
-        } else {
-        	moveType.playAudio("sound/audioTrack1.wav", 3000);
+        if (board.getTurn() == Piece.Type.GUARD) {
+        	moveType.playAudio(emotionalScore);
         }
+   
         return move;	
     }
 

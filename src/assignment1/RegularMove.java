@@ -14,7 +14,20 @@ public class RegularMove implements IMoveStrategy{
     	return board.getPossibleMoves(directions);
     }
     
-    public void playAudio(String path, int time) {
+    public void playAudio(int emotionalScore) {
+    	String path;
+    	int time;
+    	if ((0 <= emotionalScore) && (emotionalScore < 5)) {
+    		path = "sound/you_murderer.wav";
+    		time = 2000;
+        } else if ((5 <= emotionalScore) && (emotionalScore < 10)){
+        	path = "sound/5_kills_clip.wav";
+        	time = 4000;
+        } else {
+        	path = "sound/power_level_is_over_9000.wav";
+        	time  = 5000;
+        }
+
     	Audio.playAudio(path, time);
     }
 }
