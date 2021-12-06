@@ -22,10 +22,10 @@ public class RegularMove implements IMoveStrategy{
     		time = 2000;
         } else if ((5 <= emotionalScore) && (emotionalScore < 10)){
         	path = "sound/5_kills_clip.wav";
-        	time = 4000;
+        	time = 4500;
         } else {
         	path = "sound/power_level_is_over_9000.wav";
-        	time  = 5000;
+        	time  = 4000;
         }
 
     	Audio.playAudio(path, time);

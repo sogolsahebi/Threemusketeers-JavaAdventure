@@ -22,10 +22,10 @@ public class SpecialMove implements IMoveStrategy {
     		time = 3000;
         } else if ((5 <= emotionalScore) && (emotionalScore < 10)){
         	path = "sound/somebody_stop_him_2.wav";
-        	time = 5000;
+        	time = 3500;
         } else {
         	path = "sound/you_killed_10_people.wav";
-        	time  = 5000;
+        	time  = 4000;
         }
 
     	Audio.playAudio(path, time);

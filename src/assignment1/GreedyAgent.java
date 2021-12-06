@@ -25,8 +25,6 @@ public class GreedyAgent extends Agent {
         Move chosenMove = null;
 
         List<Move> possibleMoves = moveType.getPossibleMoves(boardCopy);
-        System.out.println("Moves:" + possibleMoves);
-//        System.out.println("Moves:" + possibleMoves);
         for (Move move: possibleMoves) {
         	
             Move moveCopy = new Move(move);
