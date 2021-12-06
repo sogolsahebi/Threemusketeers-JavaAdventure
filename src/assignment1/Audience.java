@@ -102,7 +102,7 @@ public class Audience implements theObserver{
 	
 	// THIS REACTION: depends on emotional_score.
 	// ^ prints out a reaction.
-	public void react() {
+	public int react() {
 		
 		String the_string = this.name + " says: " + this.message;
 		
@@ -121,12 +121,12 @@ public class Audience implements theObserver{
 			
 			
 			this.reaction = the_string + "... Way too much blood has been shed: more than 10 lives!. Brace yourselves!.";
-			
 		}
 		
 		
 		
 		System.out.println(this.reaction);
+		return emotional_score;
 		
 		
 	}

@@ -32,7 +32,7 @@ public class Audio extends Thread{
 				while(!time_up) {
 					long current_time = System.currentTimeMillis();
 					long elapsedTime = current_time - original_time;
-					long five_seconds = 5000;
+					long five_seconds = 5;
 					if (elapsedTime >   five_seconds) {
 						time_up = true;
 						clip.stop();	
