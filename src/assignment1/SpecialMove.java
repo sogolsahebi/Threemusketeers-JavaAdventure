@@ -14,7 +14,20 @@ public class SpecialMove implements IMoveStrategy {
         return board.getPossibleMoves(directions);
     }
     
-    public void playAudio(String path, int time) {
+    public void playAudio(int emotionalScore) {
+    	String path;
+    	int time;
+    	if ((0 <= emotionalScore) && (emotionalScore < 5)) {
+    		path = "sound/you_murderer_voice_2.wav";
+    		time = 3000;
+        } else if ((5 <= emotionalScore) && (emotionalScore < 10)){
+        	path = "sound/somebody_stop_him_2.wav";
+        	time = 5000;
+        } else {
+        	path = "sound/you_killed_10_people.wav";
+        	time  = 5000;
+        }
+
     	Audio.playAudio(path, time);
     }
 }
